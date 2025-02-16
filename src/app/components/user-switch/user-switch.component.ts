@@ -6,7 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { loadItems } from '../../../store/item/item.actions';
+import { loadItems, loadItemsByUser } from '../../../store/item/item.actions';
 import { loadUsers, setCurrentUser } from '../../../store/user/user.actions';
 import { selectCurrentUserId, selectUsers } from '../../../store/user/user.selectors';
 import { map, Observable, take } from 'rxjs';
@@ -29,6 +29,7 @@ export class UserSwitchComponent implements OnInit {
 
     ngOnInit(): void {
         this.store.dispatch(loadUsers());
+        this.store.dispatch(loadItems());
     }
 
 //   private async loadUsers(): Promise<void> {
@@ -54,7 +55,7 @@ export class UserSwitchComponent implements OnInit {
         // check if the stored currentUserId matches the userId passed to switchUser
         if (currentUserId === userId) {
             console.log('User ID is set correctly. Loading items...');
-            this.store.dispatch(loadItems()); 
+            this.store.dispatch(loadItemsByUser());
         } else {
             console.warn('User ID was not set correctly. Items will not be loaded.');
         }

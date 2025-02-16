@@ -134,18 +134,17 @@ export class DataService {
     return this.items;
   }
 
-  // async getUserItems(): Promise<Item[]> {
-  //   await this.loadInitialData();
+  async getItemsByUser(): Promise<Item[]> {
+    await this.loadInitialData();
 
-  //   const currentUserId = await this.getCurrentUserId();
+    const currentUserId = await this.getCurrentUserId();
 
-  //   if (currentUserId === null) {
-  //     console.log("user id in IF " + currentUserId);
-  //     return [];
-  //   }
+    if (currentUserId === null) { 
+      return [];
+    }
 
-  //   return this.items.filter(item => item.ownerIds.includes(this.getUserPartyId(currentUserId)));
-  // }
+    return this.items.filter(item => item.ownerIds.includes(this.getUserPartyId(currentUserId)));
+  }
 
   async getOwners(): Promise<Owner[]> {
     await this.loadInitialData();
@@ -157,22 +156,22 @@ export class DataService {
     return this.users;
   }
 
-  // private getCurrentUserId(): Promise<number | null> {
-  //   return new Promise((resolve) => {
-  //     this.store
-  //       .select(selectCurrentUserId)
-  //       .pipe(take(1)) 
-  //       .subscribe(userId => {
-  //         resolve(userId);
-  //       });
-  //   });
-  // }
+  private getCurrentUserId(): Promise<number | null> {
+    return new Promise((resolve) => {
+      this.store
+        .select(selectCurrentUserId)
+        .pipe(take(1)) 
+        .subscribe(userId => {
+          resolve(userId);
+        });
+    });
+  }
 
-  // private getUserPartyId(currentUserId: number): number {
-  //   const user = this.users.find(u => u.id === currentUserId);
-  //   console.log('users boolean ' + JSON.stringify(user?.partyId));
-  //   return user ? user.partyId : 0;
-  // }
+  private getUserPartyId(currentUserId: number): number {
+    const user = this.users.find(u => u.id === currentUserId);
+    console.log('users boolean ' + JSON.stringify(user?.partyId));
+    return user ? user.partyId : 0;
+  }
 
   createProposal(itemId: number, ratios: { [key: number]: number }, comment: string): void {
     const currentUserId = this.store.select(selectCurrentUserId); 

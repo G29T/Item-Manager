@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { Item } from '../../app/models/items.model';
-import { loadItemsSuccess, selectItem, updateItem } from './item.actions';
+import { loadItemsByUserSuccess, loadItemsSuccess, selectItem, updateItem } from './item.actions';
 
 export interface ItemsState {
   items: Item[];
@@ -15,6 +15,10 @@ export const initialState: ItemsState = {
 export const itemReducer = createReducer(
   initialState,
   on(loadItemsSuccess, (state, { items }) => ({ ...state, items })),
+  on(loadItemsByUserSuccess, (state, { items }) => ({
+    ...state,
+    items
+  })),
   on(selectItem, (state, { item }) => ({ ...state, selectedItem: item })),
 //   on(filterItemsByUser, (state, { userId }) => ({
 //     ...state,
