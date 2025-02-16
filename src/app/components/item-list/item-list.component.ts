@@ -1,37 +1,53 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../../services/data.services';
+import { Store } from '@ngrx/store';
+import { Observable, of, switchMap } from 'rxjs';
 import { Item } from '../../models/items.model';
+import { loadItems, selectItem } from '../../../store/item/item.actions';
+import { selectAllItems, selectSelectedItem, selectUserItems } from '../../../store/item/item.selectors';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { ProposalFormComponent } from '../proposal-form/proposal-form.component';
-import { CommonModule } from '@angular/common';
+import { DataService } from '../../services/data.services';
+import { ItemsState } from '../../../store/item/item.reducer';
+import { selectCurrentUserId } from '../../../store/user/user.selectors';
 
 @Component({
   selector: 'item-list',
   templateUrl: './item-list.component.html',
-  styleUrls: ['./item-list.component.css'],
-  imports: [ProposalFormComponent, MatListModule, CommonModule],
+  styleUrls: ['./item-list.component.scss'],
+  imports: [ProposalFormComponent, MatListModule, CommonModule, AsyncPipe],
 })
 export class ItemListComponent implements OnInit {
-  items: Item[] = [];
-  selectedItem: Item | null = null;
+  allItems$: Observable<Item[]>;
+  userItems$: Observable<Item[]>;
+  selectedItem$: Observable<Item | null>;
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService, private store: Store<ItemsState>) {
+    this.allItems$ = this.store.select(selectAllItems);
+    this.selectedItem$ = this.store.select(selectSelectedItem);
+
+
+    this.userItems$ = this.store.select(selectCurrentUserId).pipe(
+      switchMap(userId => {
+        if (userId !== null) {
+          return this.store.select(selectUserItems(userId));
+        } else {
+          return of([]);
+        }
+      })
+    );
+  }
 
   ngOnInit(): void {
-    this.loadItems();
-    console.log(this.items);
+    this.store.dispatch(loadItems());
+
+    // this.allItems$.subscribe(items => {
+    //   console.log('Selected All Items:', items);
+    // });
+
   }
   
-  private async loadItems(): Promise<void> {
-    try {
-      this.items = await this.dataService.getItems();
-      console.log('Loaded items:', this.items); 
-    } catch (error) {
-      console.error('Error fetching items:', error);
-    }
-  }
-
   onSelectItem(item: Item): void {
-    this.selectedItem = item;
+    this.store.dispatch(selectItem({ item }));
   }
 }

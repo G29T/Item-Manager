@@ -1,0 +1,21 @@
+mat-list {
+  margin: 20px 0;
+}
+
+mat-list-item {
+  margin: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  padding: 10px; 
+  white-space: normal; 
+  overflow: hidden; 
+  text-overflow: ellipsis;
+}
+
+mat-list-item:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+h4, p {
+  margin: 0; 
+}

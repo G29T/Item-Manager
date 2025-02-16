@@ -6,7 +6,7 @@
       <input matInput [(ngModel)]="comment" name="comment" required />
     </mat-form-field>
     
-    <div *ngFor="let owner of dataService.getOwners()">
+    <div *ngFor="let owner of dataService.getOwners() | async">
       <mat-form-field>
         <mat-label>{{ owner.name }}</mat-label>
         <input matInput type="number" [(ngModel)]="ratios[owner.id]" placeholder="Payment Ratio" required />

@@ -1,9 +1,10 @@
 <mat-list>
-    <h3 mat-subheader>Items</h3>
-    <mat-list-item *ngFor="let item of items" (click)="onSelectItem(item)">
-        <h4 mat-line>{{ item.name }}</h4>
-        <p mat-line>{{ item.description }} - Total Cost: {{ item.totalCost }}</p>
-    </mat-list-item>
+  <h3 mat-subheader>Items</h3>
+  <mat-list-item *ngFor="let item of userItems$ | async" (click)="onSelectItem(item)">
+    <h4 mat-line>{{ item.name }}</h4>
+    <p mat-line>{{ item.description }} - Total Cost: {{ item.totalCost }}</p>
+  </mat-list-item>
 </mat-list>
-<proposal-form *ngIf="selectedItem" [item]="selectedItem"></proposal-form>
+  
+<proposal-form *ngIf="(selectedItem$ | async) as selectedItem" [item]="selectedItem"></proposal-form>
   

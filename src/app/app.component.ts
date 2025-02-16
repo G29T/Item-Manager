@@ -29,12 +29,10 @@ import { DataService } from './services/data.services';
     ItemListComponent,
   ],
   providers: [DataService],
-  
 })
 export class AppComponent {
   title = 'item-manager';
-  
+
   ngOnInit(): void {
   }
-  
 }
