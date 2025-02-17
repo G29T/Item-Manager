@@ -6,7 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { loadItems, loadItemsByUser } from '../../../store/item/item.actions';
+import { loadItems, loadItemsByUser, selectItem } from '../../../store/item/item.actions';
 import { loadUsers, setCurrentUser } from '../../../store/user/user.actions';
 import { selectCurrentUserId, selectUsers } from '../../../store/user/user.selectors';
 import { map, Observable, take } from 'rxjs';
@@ -43,6 +43,7 @@ export class UserSwitchComponent implements OnInit {
 
     switchUser(userId: number): void {
         this.store.dispatch(setCurrentUser({ userId })); 
+        this.store.dispatch(selectItem({ item: null })); 
     
         // `switchMap` operator to react to the userId changes
         this.store.select(selectCurrentUserId).pipe(
