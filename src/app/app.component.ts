@@ -10,6 +10,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { DataService } from './services/data.services';
+import { ProposalFormComponent } from './components/proposal-form/proposal-form.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ProposalHistoryComponent } from './components/proposal-history/proposal-history.component';
 
 @Component({
   selector: 'app-root',
@@ -25,8 +28,12 @@ import { DataService } from './services/data.services';
     MatListModule,
     CommonModule,
     RouterOutlet,
+    MatFormFieldModule,
+    MatInputModule,
     UserSwitchComponent,
     ItemListComponent,
+    ProposalFormComponent, 
+    ProposalHistoryComponent,
   ],
   providers: [DataService],
 })

@@ -9,6 +9,7 @@ import { ItemEffects } from '../store/item/item.effect';
 import { itemReducer } from '../store/item/item.reducer'; 
 import { userReducer } from '../store/user/user.reducer';
 import { UserEffects } from '../store/user/user.effect';
+import { proposalReducer } from '../store/proposal/proposal.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,7 +18,8 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideStore({ 
       items: itemReducer, 
-      user: userReducer 
+      user: userReducer,
+      proposals: proposalReducer, 
     }),  
     provideEffects([ItemEffects]),
     provideEffects([UserEffects]),
