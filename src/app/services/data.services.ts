@@ -62,6 +62,18 @@ export class DataService {
   
     return Promise.resolve(items);
   }
+
+
+  // async getItems(): Promise<Item[]> {
+  //   const items = this.localStorageService.loadFromLocalStorage<Item[]>('items') || [];
+  //   const users = await this.getUsers(); 
+  
+  //   return items.map(item => ({
+  //     ...item,
+  //     isShared: users.some(user => item.ownerIds.includes(user.partyId))
+  //   }));
+  // }
+  
   
   async getItemsByUser(): Promise<Item[]> {
     const items =   this.getItems();

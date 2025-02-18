@@ -4,7 +4,7 @@
     <h4 mat-line>
       {{ item.name }}
       <span *ngIf="(hasPendingProposals(item.id) | async)" class="material-icons">hourglass_empty</span>
-      <span *ngIf="(isSharedItem(item) | async)" class="material-icons">group</span>
+      <span *ngIf="item.isShared" class="material-icons">group</span>
     </h4>
     <p mat-line>{{ item.description }} - Total Cost: {{ item.totalCost }}</p>
   </mat-list-item>
