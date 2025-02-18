@@ -12,6 +12,7 @@ import { ProposalDialogComponent } from '../proposal-dialog/proposal-dialog.comp
 import { acceptProposal, setBackToPendingProposal, withdrawProposal } from '../../../store/proposal/proposal.actions';
 import { selectCurrentUserId } from '../../../store/user/user.selectors';
 import { Owner } from '../../models/owner.model';
+import { selectOwners } from '../../../store/owner/owner.selector';
 
 @Component({
   selector: 'proposal-history',
@@ -19,14 +20,15 @@ import { Owner } from '../../models/owner.model';
   styleUrls: ['./proposal-history.component.css'],
   imports: [AsyncPipe, CommonModule],    
 })
-export class ProposalHistoryComponent implements OnInit {
+export class ProposalHistoryComponent {
   selectedItem$: Observable<Item | null>;
   currentUserId$: Observable<number | null>;
   proposalsByItem$: Observable<Proposal[] | null>;
-  ownersFromFile: Owner[] = [];
+  owners$: Observable<Owner[]>;
 
   constructor(private dataService: DataService, private store: Store, private dialog: MatDialog) {
     this.currentUserId$ = this.store.select(selectCurrentUserId);
+    this.owners$ = this.store.select(selectOwners);
     this.selectedItem$ = this.store.select(selectSelectedItem);
     this.proposalsByItem$ = this.selectedItem$.pipe(
       switchMap((item) => {
@@ -55,13 +57,13 @@ export class ProposalHistoryComponent implements OnInit {
     );
   } 
 
-  async ngOnInit() {
-    this.ownersFromFile = await this.dataService.getOwners();
-  }
-
-  getOwnerNameById(ownerId: number): string {
-    const owner = this.ownersFromFile.find(owner => owner.id === ownerId);
-    return owner ? owner.name : 'Unknown Owner';
+  getOwnerNameById(ownerId: number): Observable<string> {
+    return this.owners$.pipe(
+      map(owners => {
+        const owner = owners.find(owner => owner.id === ownerId);
+        return owner ? owner.name : 'Unknown Owner';
+      })
+    );
   }
 
   openCounterProposalDialog(proposal: Proposal): void {
