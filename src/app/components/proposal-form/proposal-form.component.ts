@@ -37,21 +37,6 @@ export class ProposalFormComponent implements OnInit {
 
   async ngOnInit() {
     this.usersFromFile = await this.dataService.getUsers();
-  
-    this.store.select(selectProposalState).subscribe(state => {
-      this.proposalCreationSuccess = state.creationSuccess;
-      this.proposalCreationError = state.creationError;
-
-      if (this.proposalCreationSuccess) {
-        // Handle success
-        alert("Proposal created successfully!");
-      }
-
-      if (this.proposalCreationError) {
-        // Handle an error message)
-        alert(`${this.proposalCreationError}`);
-      }
-    });
   }
 
   createProposal() {
@@ -79,6 +64,15 @@ export class ProposalFormComponent implements OnInit {
       };
 
       this.store.dispatch(createProposal({ proposal }));
+      
+      this.store.select(selectProposalState).pipe(take(1)).subscribe(state => {
+        if (state.creationSuccess) {
+          alert("Proposal created successfully!");
+        }
+        if (state.creationError) {
+          alert(`Error: ${state.creationError}`);
+        }
+      });
     });
   }
 }
