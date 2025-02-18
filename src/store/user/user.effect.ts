@@ -27,15 +27,3 @@ export class UserEffects {
   );
 }
 
-  
-  
-//   createEffect(() =>
-//     this.actions$.pipe(
-//       ofType(loadUsers),
-//       map(() => {
-//         const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
-//         return loadUsersSuccess({ users });
-//       })
-//     )
-//   );
-
