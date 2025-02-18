@@ -1,15 +1,23 @@
 <div *ngIf="(proposalsByItem$ | async) as proposals">
   <ul *ngIf="proposals?.length">
     <li *ngFor="let proposal of proposals">
-      <strong>{{ proposal.createdAt | date }}</strong> - {{ proposal.comment }}
-      <!-- <span>Counter proposal for proposal id: </span> -->
+      <div>Proposal ID: <strong>{{ proposal.id }}</strong></div>
+      <div *ngIf="proposal.counterProposalToId">
+        Counter Proposal To ID: <strong>{{ proposal.counterProposalToId }}</strong>
+      </div>
+      <strong>{{ proposal.createdAt | date }}</strong>
+      <br>
+      <span>{{ proposal.comment }}</span>
       <span [ngClass]="{ accepted: proposal.status === 'Accepted', rejected: proposal.status === 'Rejected' }">
         ({{ proposal.status }})
+        <span *ngIf="proposal.status === 'Pending'" class="material-icons">hourglass_empty</span>
+        <span *ngIf="proposal.status === 'Accepted'" class="material-icons">check_circle</span>
+        <span *ngIf="proposal.status === 'Rejected'" class="material-icons">cancel</span>
+        <span *ngIf="proposal.status === 'Withdrawn'" class="material-icons">remove_circle</span>
       </span>
       <div *ngFor="let ownerId of proposal.ownerIds">
         <p>{{ getOwnerNameById(ownerId) }} - Payment Ratio: {{ proposal.paymentRatios[ownerId] }}</p>
       </div>
-      <!-- <button (click)="acceptProposal(proposal)">Accept</button> -->
       <button *ngIf="proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Rejected' && (currentUserId$ | async) === proposal.userId" (click)="withdrawProposal(proposal)">Withdraw</button>
       <button *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && (currentUserId$ | async) !== proposal.userId" (click)="acceptProposal(proposal)">Accept</button>
       <button *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && (currentUserId$ | async) !== proposal.userId" (click)="openCounterProposalDialog(proposal)">Reject</button>

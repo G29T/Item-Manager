@@ -20,9 +20,9 @@ import { Owner } from '../../models/owner.model';
   imports: [AsyncPipe, CommonModule],    
 })
 export class ProposalHistoryComponent implements OnInit {
-  proposalsByItem$: Observable<Proposal[] | null>;
   selectedItem$: Observable<Item | null>;
   currentUserId$: Observable<number | null>;
+  proposalsByItem$: Observable<Proposal[] | null>;
   ownersFromFile: Owner[] = [];
 
   constructor(private dataService: DataService, private store: Store, private dialog: MatDialog) {
