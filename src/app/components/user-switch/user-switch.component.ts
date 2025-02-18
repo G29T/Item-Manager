@@ -10,6 +10,7 @@ import { loadUsers, setCurrentUser } from '../../../store/user/user.actions';
 import { selectCurrentUserId, selectUsers } from '../../../store/user/user.selectors';
 import { map, Observable, take } from 'rxjs';
 import { UsersState } from '../../../store/user/user.reducer';
+import { loadOwners } from '../../../store/owner/owner.actions';
 
 @Component({
     selector: 'user-switch',
@@ -29,6 +30,7 @@ export class UserSwitchComponent implements OnInit {
     ngOnInit(): void {
         this.store.dispatch(loadUsers());
         this.store.dispatch(loadItems());
+        this.store.dispatch(loadOwners());
     }
 
     switchUser(userId: number): void {
