@@ -4,5 +4,6 @@ export interface Item {
     description: string;
     totalCost: number;
     ownerIds: number[];
+    isShared?: boolean;
 }
   
