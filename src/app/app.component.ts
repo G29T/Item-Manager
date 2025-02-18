@@ -13,6 +13,7 @@ import { DataService } from './services/data.services';
 import { ProposalFormComponent } from './components/proposal-form/proposal-form.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ProposalHistoryComponent } from './components/proposal-history/proposal-history.component';
+import { ProposalDialogComponent } from './components/proposal-dialog/proposal-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -34,6 +35,7 @@ import { ProposalHistoryComponent } from './components/proposal-history/proposal
     ItemListComponent,
     ProposalFormComponent, 
     ProposalHistoryComponent,
+    ProposalDialogComponent
   ],
   providers: [DataService],
 })

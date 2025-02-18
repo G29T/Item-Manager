@@ -81,20 +81,20 @@ export class DataService {
     return user ? user.partyId : 0;
   }
 
-  createProposal(itemId: number, ratios: { [key: number]: number }, comment: string): void {
-    const currentUserId = this.store.select(selectCurrentUserId); 
-    const proposal = {
-      itemId,
-      ratios,
-      comment,
-      createdAt: new Date(),
-      createdBy: currentUserId, 
-    };
-    this.proposals.push(proposal);
-    this.saveProposals();
-  }
+  // createProposal(itemId: number, ratios: { [key: number]: number }, comment: string): void {
+  //   const currentUserId = this.store.select(selectCurrentUserId); 
+  //   const proposal = {
+  //     itemId,
+  //     ratios,
+  //     comment,
+  //     createdAt: new Date(),
+  //     createdBy: currentUserId, 
+  //   };
+  //   this.proposals.push(proposal);
+  //   this.saveProposals();
+  // }
 
-  private saveProposals(): void {
-    localStorage.setItem('proposals', JSON.stringify(this.proposals));
-  }
+  // private saveProposals(): void {
+  //   localStorage.setItem('proposals', JSON.stringify(this.proposals));
+  // }
 }

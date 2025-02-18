@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Create Counter Proposal</h2>
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Comment</mat-label>
+    <input matInput [(ngModel)]="comment" required />
+  </mat-form-field>
+
+  <div *ngFor="let owner of data.selectedProposal.ownerIds">
+    <mat-form-field>
+      <mat-label>Payment Ratio for {{ owner }}</mat-label>
+      <input matInput type="number" [(ngModel)]="paymentRatios[owner]" name="paymentRatio_{{ owner }}" placeholder="Payment Ratio" required />
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="submitCounterProposal()">Submit</button>
+</div>

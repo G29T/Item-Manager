@@ -1,6 +1,5 @@
 export interface User {
-    id: number;
-    name: string;
-    partyId: number;
-  }
-  
+  id: number;
+  name: string;
+  partyId: number;
+}

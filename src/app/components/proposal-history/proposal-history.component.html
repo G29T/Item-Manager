@@ -2,12 +2,17 @@
   <ul *ngIf="proposals?.length">
     <li *ngFor="let proposal of proposals">
       <strong>{{ proposal.createdAt | date }}</strong> - {{ proposal.comment }}
+      <!-- <span>Counter proposal for proposal id: </span> -->
       <span [ngClass]="{ accepted: proposal.status === 'Accepted', rejected: proposal.status === 'Rejected' }">
         ({{ proposal.status }})
       </span>
       <div *ngFor="let ownerId of proposal.ownerIds">
-        <p>Owner ID: {{ ownerId }} - Payment Ratio: {{ proposal.paymentRatios[ownerId] }}</p>
+        <p>{{ getOwnerNameById(ownerId) }} - Payment Ratio: {{ proposal.paymentRatios[ownerId] }}</p>
       </div>
+      <!-- <button (click)="acceptProposal(proposal)">Accept</button> -->
+      <button *ngIf="proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Rejected' && (currentUserId$ | async) === proposal.userId" (click)="withdrawProposal(proposal)">Withdraw</button>
+      <button *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && (currentUserId$ | async) !== proposal.userId" (click)="acceptProposal(proposal)">Accept</button>
+      <button *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && (currentUserId$ | async) !== proposal.userId" (click)="openCounterProposalDialog(proposal)">Reject</button>
     </li>
   </ul>
   <p *ngIf="!proposals?.length">No proposals available for this item.</p>

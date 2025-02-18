@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { Proposal } from '../../models/proposal.model';
 import { DataService } from '../../services/data.services';
 import { Item } from '../../models/items.model';
@@ -9,19 +9,21 @@ import { take } from 'rxjs/operators';
 import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatInputModule } from '@angular/material/input';
+import { MatInput, MatInputModule } from '@angular/material/input';
 import { createProposal } from '../../../store/proposal/proposal.actions';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'proposal-form',
   templateUrl: './proposal-form.component.html',
   styleUrls: ['./proposal-form.component.css'],
-  imports: [ProposalFormComponent, MatFormField, MatLabel, FormsModule, CommonModule, MatFormFieldModule, MatInputModule],
+  imports: [ProposalFormComponent, MatFormField, MatLabel, FormsModule, MatInput, CommonModule, MatFormFieldModule, MatInputModule],
 })
-export class ProposalFormComponent {
+export class ProposalFormComponent implements OnInit {
   @Input() item: Item | null = null;
   @Output() submitProposal = new EventEmitter<Proposal[]>();
   currentUserId$: Observable<number | null>;
+  usersFromFile: User[] = [];
 
   comment: string = '';
   paymentRatios: { [ownerId: number]: number } = {};
@@ -30,17 +32,24 @@ export class ProposalFormComponent {
     this.currentUserId$ = this.store.select(selectCurrentUserId);
   }
 
+  async ngOnInit() {
+    this.usersFromFile = await this.dataService.getUsers();
+  }
+
   createProposal() {
     const item = this.item; 
     this.currentUserId$.pipe(take(1)).subscribe((userId) => {
       if (!item || !item.ownerIds || userId === null) return;
+      const usersResponses: { userId: number; accept: boolean }[] = this.usersFromFile
+        .filter(user => 
+          item.ownerIds.includes(user.partyId) && user.id !== userId)
+        .map(user => ({ userId: user.id, accept: false }));
 
       const proposal: Proposal = {
         id: Math.random().toString(36).substr(2, 9),
         itemId: item.id,
         userId: userId,
         ownerIds: item.ownerIds,
-        // paymentRatio: this.paymentRatios[ownerId] || 0,
         paymentRatios: item.ownerIds.reduce((acc, ownerId) => {
           acc[ownerId] = this.paymentRatios[ownerId] || 0;
           return acc;
@@ -48,11 +57,9 @@ export class ProposalFormComponent {
         comment: this.comment || '',
         createdAt: new Date(),
         status: 'Pending',
+        usersResponses: usersResponses,
       };
 
-
-      console.log("PROPOSALS" + JSON.stringify(proposal));
-      // this.submitProposal.emit(proposals);
       this.store.dispatch(createProposal({ proposal }));
     });
   }

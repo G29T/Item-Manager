@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../../services/data.services';
 import { User } from '../../models/user.model';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
@@ -23,7 +22,7 @@ export class UserSwitchComponent implements OnInit {
     users$: Observable<User[]>;
     selectedUserId: number | null = null;
 
-    constructor(private dataService: DataService, private store: Store<UsersState>) {
+    constructor(private store: Store<UsersState>) {
         this.users$ = this.store.select(selectUsers);
     }
 
@@ -32,34 +31,23 @@ export class UserSwitchComponent implements OnInit {
         this.store.dispatch(loadItems());
     }
 
-//   private async loadUsers(): Promise<void> {
-//     try {
-//       this.users = await this.dataService.getUsers();
-//       console.log('Users in UserSwitchComponent:', this.users); 
-//     } catch (error) {
-//       console.error('Error fetching users:', error); 
-//     }
-//   }
-
     switchUser(userId: number): void {
         this.store.dispatch(setCurrentUser({ userId })); 
         this.store.dispatch(selectItem({ item: null })); 
     
-        // `switchMap` operator to react to the userId changes
         this.store.select(selectCurrentUserId).pipe(
-        take(1),
-        map(currentUserId => {
-            console.log('Current User ID from Store:', currentUserId);
-            return currentUserId;
-        })
+            take(1),
+            map(currentUserId => {
+                console.log('Current User ID from Store:', currentUserId);
+                return currentUserId;
+            })
         ).subscribe(currentUserId => {
-        // check if the stored currentUserId matches the userId passed to switchUser
-        if (currentUserId === userId) {
-            console.log('User ID is set correctly. Loading items...');
-            this.store.dispatch(loadItemsByUser());
-        } else {
-            console.warn('User ID was not set correctly. Items will not be loaded.');
-        }
+            if (currentUserId === userId) {
+                console.log('User ID is set correctly. Loading items...');
+                this.store.dispatch(loadItemsByUser());
+            } else {
+                console.warn('User ID was not set correctly. Items will not be loaded.');
+            }
         });
     }
 }
