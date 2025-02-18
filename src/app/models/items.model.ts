@@ -5,5 +5,6 @@ export interface Item {
     totalCost: number;
     ownerIds: number[];
     isShared?: boolean;
+    hasPending?: boolean;
 }
   
