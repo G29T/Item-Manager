@@ -6,7 +6,7 @@ export interface Proposal {
   paymentRatios: { [key: number]: number };
   comment: string;
   createdAt: Date;
-  status: 'Pending' | 'Accepted' | 'Rejected'  | 'Withdrawn' | 'Finalized - Accepted';
+  status: 'Pending' | 'Accepted' | 'Rejected'  | 'Withdrawn' | 'Finalised - Accepted';
   counterProposalToId?: string;
   usersResponses: { userId: number; accept: boolean }[];
 }

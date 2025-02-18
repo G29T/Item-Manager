@@ -118,7 +118,7 @@ export const proposalReducer = createReducer(
           if (proposal.id === proposalId) {
             return {
               ...proposal,
-              status: "Finalized - Accepted" 
+              status: "Finalised - Accepted" 
             };
           }
           return proposal;
