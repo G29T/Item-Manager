@@ -4,17 +4,20 @@ import { Proposal } from '../../app/models/proposal.model';
 
 export interface ProposalState {
   proposals: { [userId: number]: Proposal[] }; 
+  creationSuccess: boolean;
+  creationError: string | null; 
 }
 
 const initialState: ProposalState = {
   proposals: {},
+  creationSuccess: false,
+  creationError: null,
 };
 
 export const proposalReducer = createReducer(
   initialState,
 
   on(ProposalActions.createProposal, (state, { proposal }) => {
-
     const userProposals = state.proposals[proposal.userId] || [];
 
     const hasPendingProposal = userProposals.some(existingProposal => 
@@ -23,37 +26,52 @@ export const proposalReducer = createReducer(
 
     if (hasPendingProposal) {
       console.error("There is a pending proposal that waits to be finalized.");
-      return state; 
+      // alert("There is a pending proposal that waits to be finalized."); 
+      return {
+        ...state,
+        creationSuccess: false,
+        creationError: "There is a pending proposal that waits to be finalized.",
+      };
     }
 
-    const updatedProposals = {
-      ...state.proposals,
-      [proposal.userId]: [
-        ...(state.proposals[proposal.userId] || []),
-        proposal,
-      ],
-    };
+    try {
+      const updatedProposals = {
+        ...state.proposals,
+        [proposal.userId]: [
+          ...(state.proposals[proposal.userId] || []),
+          proposal,
+        ],
+      };
 
-    proposal.usersResponses.forEach(({ userId }) => {
-    
-      if (!updatedProposals[userId]) {
-        updatedProposals[userId] = []; 
-      }
+      proposal.usersResponses.forEach(({ userId }) => {
+        if (!updatedProposals[userId]) {
+          updatedProposals[userId] = []; 
+        }
   
-      updatedProposals[userId] = [
-        ...updatedProposals[userId], 
-        proposal, 
-      ];
-    });
-  
-    return {
-      ...state,
-      proposals: updatedProposals, 
-    };
+        updatedProposals[userId] = [
+          ...updatedProposals[userId], 
+          proposal, 
+        ];
+      });
+
+      return {
+        ...state,
+        proposals: updatedProposals, 
+        creationSuccess: true, 
+        creationError: null, 
+      };
+    } catch (error) {
+      console.error("An error occurred while creating the proposal:", error);
+      // alert("An error occurred while creating the proposal."); 
+      return {
+        ...state,
+        creationSuccess: false,
+        creationError: "Error occurred while creating proposal.", 
+      };
+    }
   }),
-  
-  on(ProposalActions.counterProposal, (state, { proposalId, newProposal }) => {
 
+  on(ProposalActions.counterProposal, (state, { proposalId, newProposal }) => {
     const updatedProposals = JSON.parse(JSON.stringify(state.proposals));
 
     for (const key in updatedProposals) {
@@ -75,28 +93,25 @@ export const proposalReducer = createReducer(
 
   on(ProposalActions.acceptProposal, (state, { proposalId, userId }) => {
     const userProposals = state.proposals[userId] || [];
+    const updatedProposals = JSON.parse(JSON.stringify(state.proposals));
 
-    const updatedProposals = JSON.parse(JSON.stringify(state.proposals)); 
-  
     for (const key in updatedProposals) {
       updatedProposals[key] = updatedProposals[key].map((proposal: Proposal) => {
-        if (proposal.id !== proposalId) return proposal; 
-  
+        if (proposal.id !== proposalId) return proposal;
+
         return {
           ...proposal,
           usersResponses: proposal.usersResponses.map(response =>
-            response.userId === userId  ? { ...response, accept: true } : response
+            response.userId === userId ? { ...response, accept: true } : response
           )
         };
       });
     }
-  
+
     const allAccepted = updatedProposals[userId]?.some((proposal: Proposal) =>
       proposal.usersResponses.every(response => response.accept)
     );
 
-    // const status = allAccepted ? "Finalized - Accepted" : "Accepted";
-  
     if (allAccepted) {
       for (const key in updatedProposals) {
         updatedProposals[key] = updatedProposals[key].map((proposal: Proposal) => {
@@ -123,30 +138,30 @@ export const proposalReducer = createReducer(
         return proposal;
       });
     }
-  
+
     return {
       ...state,
       proposals: updatedProposals,
     };
   }),
-  
+
   on(ProposalActions.rejectProposal, (state, { proposalId }) => {
     const updatedProposals = { ...state.proposals };
-  
+
     Object.keys(updatedProposals).forEach((userIdStr) => {
-      const userId = Number(userIdStr); 
-  
+      const userId = Number(userIdStr);
+
       updatedProposals[userId] = updatedProposals[userId].map((proposal) =>
         proposal.id === proposalId ? { ...proposal, status: 'Rejected' as const } : proposal
       );
     });
-  
+
     return {
       ...state,
       proposals: updatedProposals,
     };
   }),
-  
+
   // Object.keys
   on(ProposalActions.withdrawProposal, (state, { proposalId }) => {
     const updatedProposals = JSON.parse(JSON.stringify(state.proposals));
@@ -159,7 +174,7 @@ export const proposalReducer = createReducer(
         return proposal;
       });
     }
-  
+
     return {
       ...state,
       proposals: updatedProposals,
@@ -177,7 +192,7 @@ export const proposalReducer = createReducer(
         return proposal;
       });
     }
-  
+
     return {
       ...state,
       proposals: updatedProposals,

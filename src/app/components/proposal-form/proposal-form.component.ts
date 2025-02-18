@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { createProposal } from '../../../store/proposal/proposal.actions';
 import { User } from '../../models/user.model';
+import { selectProposalState } from '../../../store/proposal/proposal.selector';
 
 @Component({
   selector: 'proposal-form',
@@ -27,6 +28,8 @@ export class ProposalFormComponent implements OnInit {
 
   comment: string = '';
   paymentRatios: { [ownerId: number]: number } = {};
+  proposalCreationSuccess: boolean | null = null; 
+  proposalCreationError: string | null = null; 
 
   constructor(private dataService: DataService, private store: Store) {
     this.currentUserId$ = this.store.select(selectCurrentUserId);
@@ -34,6 +37,21 @@ export class ProposalFormComponent implements OnInit {
 
   async ngOnInit() {
     this.usersFromFile = await this.dataService.getUsers();
+  
+    this.store.select(selectProposalState).subscribe(state => {
+      this.proposalCreationSuccess = state.creationSuccess;
+      this.proposalCreationError = state.creationError;
+
+      if (this.proposalCreationSuccess) {
+        // Handle success
+        alert("Proposal created successfully!");
+      }
+
+      if (this.proposalCreationError) {
+        // Handle an error message)
+        alert(`${this.proposalCreationError}`);
+      }
+    });
   }
 
   createProposal() {
