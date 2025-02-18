@@ -5,63 +5,74 @@ import { selectCurrentUserId } from '../../store/user/user.selectors';
 import { Item } from '../models/items.model';
 import { Owner } from '../models/owner.model';
 import { User } from '../models/user.model';
+import { LocalStorageService } from './local-storage.service';
+import itemsJson from '../../assets/items.json'
+import usersJson from '../../assets/users.json';
+import ownersJson from '../../assets/owners.json';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  private items: Item[] = [];
-  private owners: Owner[] = [];
-  private users: User[] = [];
-  private proposals: any[] = [];
-
-  constructor(private store: Store) {
+  constructor(private store: Store, private localStorageService: LocalStorageService) {
     this.loadInitialData();
   }
 
-  private async loadInitialData(): Promise<void> {
-    try {
-      this.items = await this.loadJSON<Item[]>('assets/items.json');
-      this.owners = await this.loadJSON<Owner[]>('assets/owners.json');
-      this.users = await this.loadJSON<User[]>('assets/users.json');
-    } catch (error) {
-      console.error('Error loading initial data:', error);
+  private loadInitialData(): void {
+    if (!this.localStorageService.loadFromLocalStorage('items')) {
+      this.localStorageService.saveToLocalStorage('items', itemsJson);
+    }
+    if (!this.localStorageService.loadFromLocalStorage('users')) {
+      this.localStorageService.saveToLocalStorage('users', usersJson);
+    }
+    if (!this.localStorageService.loadFromLocalStorage('owners')) {
+      this.localStorageService.saveToLocalStorage('owners', ownersJson);
     }
   }
 
-  private async loadJSON<T>(url: string): Promise<T> {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Network response was not ok: ${response.statusText}`);
-    }
-    return await response.json();
+  getUsers(): Promise<User[]> {
+    const users = this.localStorageService.loadFromLocalStorage<User[]>('users');
+  
+    if (!users) {
+      console.warn('No users found in local storage.');
+      return Promise.resolve([]); 
+    } 
+  
+    return Promise.resolve(users); 
   }
 
-  async getItems(): Promise<Item[]> {
-    await this.loadInitialData();
-    return this.items;
+  getOwners(): Promise<Owner[]>  {
+    const owners = this.localStorageService.loadFromLocalStorage<Owner[]>('owners');
+
+    if (!owners) {
+      console.warn('No owners found in local storage.');
+      return Promise.resolve([]); 
+    } 
+  
+    return Promise.resolve(owners); 
   }
 
+  getItems(): Promise<Item[]>  {
+    const items = this.localStorageService.loadFromLocalStorage<Item[]>('items');
+  
+    if (!items) {
+      console.warn('No items found in local storage.');
+      return Promise.resolve([]); 
+    } 
+  
+    return Promise.resolve(items);
+  }
+  
   async getItemsByUser(): Promise<Item[]> {
-    await this.loadInitialData();
-
+    const items =   this.getItems();
+    
     const currentUserId = await this.getCurrentUserId();
 
     if (currentUserId === null) { 
       return [];
     }
 
-    return this.items.filter(item => item.ownerIds.includes(this.getUserPartyId(currentUserId)));
-  }
-
-  async getOwners(): Promise<Owner[]> {
-    await this.loadInitialData();
-    return this.owners;
-  }
-
-  async getUsers(): Promise<User[]> {
-    await this.loadInitialData();
-    return this.users;
+    return (await items).filter(async item => item.ownerIds.includes(await this.getUserPartyId(currentUserId)));
   }
 
   private getCurrentUserId(): Promise<number | null> {
@@ -75,9 +86,11 @@ export class DataService {
     });
   }
 
-  private getUserPartyId(currentUserId: number): number {
-    const user = this.users.find(u => u.id === currentUserId);
-    console.log('users boolean ' + JSON.stringify(user?.partyId));
+  private async getUserPartyId(currentUserId: number): Promise<number> {
+    const users = this.getUsers();
+    const user = (await users).find(user => user.id === currentUserId);
+
+    // console.log('users boolean ' + JSON.stringify(user?.partyId));
     return user ? user.partyId : 0;
   }
 
