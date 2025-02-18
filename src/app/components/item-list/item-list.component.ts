@@ -10,7 +10,8 @@ import { ItemsState } from '../../../store/item/item.reducer';
 import { ProposalFormComponent } from '../proposal-form/proposal-form.component';
 import { ProposalHistoryComponent } from '../proposal-history/proposal-history.component';
 import { selectProposalsForItem } from '../../../store/proposal/proposal.selector';
-import { selectCurrentUserId } from '../../../store/user/user.selectors';
+import { selectCurrentUserId, selectUsers } from '../../../store/user/user.selectors';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'item-list',
@@ -23,11 +24,13 @@ export class ItemListComponent {
   userItems$: Observable<Item[]>;
   selectedItem$: Observable<Item | null>;
   currentUserId$: Observable<number | null>;
+  users$: Observable<User[]>;
 
   constructor(private store: Store<ItemsState>) {
     this.currentUserId$ = this.store.select(selectCurrentUserId);
     this.userItems$ = this.store.select(selectItemsByUser);
     this.selectedItem$ = this.store.select(selectSelectedItem);
+    this.users$ = this.store.select(selectUsers); 
   }
 
   hasPendingProposals(itemId: number): Observable<boolean> {
@@ -46,6 +49,21 @@ export class ItemListComponent {
       })
     );
   }
+
+  isSharedItem(item: Item): Observable<boolean> {
+    return this.users$.pipe(
+      map(users => {
+        const matchingUserIds = users
+         // Find users whose partyId matches ownerIds
+          .filter(user => item.ownerIds.includes(user.partyId))
+          .map(user => user.id); 
+  
+        return matchingUserIds.length > 1; 
+      })
+    );
+  }
+  
+
   // ngOnInit(): void {
   //   this.store.dispatch(loadItemsByUser());
 
