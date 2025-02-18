@@ -10,6 +10,8 @@ import { itemReducer } from '../store/item/item.reducer';
 import { userReducer } from '../store/user/user.reducer';
 import { UserEffects } from '../store/user/user.effect';
 import { proposalReducer } from '../store/proposal/proposal.reducer';
+import { ownerReducer } from '../store/owner/owner.reducer';
+import { OwnerEffects } from '../store/owner/owner.effect';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,9 +22,9 @@ export const appConfig: ApplicationConfig = {
       items: itemReducer, 
       user: userReducer,
       proposals: proposalReducer, 
+      owners: ownerReducer,
     }),  
-    provideEffects([ItemEffects]),
-    provideEffects([UserEffects]),
-    // provideStoreDevtools({ maxAge: 27, logOnly: !isDevMode() })
+    provideEffects([ItemEffects, UserEffects, OwnerEffects]),
+    provideStoreDevtools({ maxAge: 24, logOnly: !isDevMode() })
   ],
 };
