@@ -28,8 +28,8 @@ export class UserSwitchComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // this.store.dispatch(loadUsers());
-        this.store.dispatch(loadItems());
+        this.store.dispatch(loadUsers());
+        // this.store.dispatch(loadItems());
         this.store.dispatch(loadOwners());
     }
 

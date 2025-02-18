@@ -13,6 +13,7 @@ import { rejectProposal } from '../../../store/proposal/proposal.actions';
 import { counterProposal } from '../../../store/proposal/proposal.actions'; 
 import { FormsModule } from '@angular/forms';
 import { User } from '../../models/user.model';
+import { selectProposalState } from '../../../store/proposal/proposal.selector';
 
 @Component({
   selector: 'proposal-dialog',
@@ -73,10 +74,21 @@ export class ProposalDialogComponent {
             proposalId: item.id, 
             newProposal: counterProposalData 
             }));
-    
+
+            this.store.select(selectProposalState).pipe(take(1)).subscribe(state => {
+                if (state.creationSuccess) {
+                  alert("Counterproposal created successfully!");
+                }
+                if (state.creationError) {
+                  alert(`Error: ${state.creationError}`);
+                }
+              });
+
+
             this.store.dispatch(rejectProposal({ proposalId: item.id }));
             
             this.dialogRef.close(counterProposalData);
+
         });
     });
   }

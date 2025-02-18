@@ -3,7 +3,7 @@
     <li *ngFor="let proposal of proposals">
       <div>Proposal ID: <strong>{{ proposal.id }}</strong></div>
       <div *ngIf="proposal.counterProposalToId">
-        Counter Proposal To ID: <strong>{{ proposal.counterProposalToId }}</strong>
+        Counterproposal To ID: <strong>{{ proposal.counterProposalToId }}</strong>
       </div>
       <strong>{{ proposal.createdAt | date }}</strong>
       <br>

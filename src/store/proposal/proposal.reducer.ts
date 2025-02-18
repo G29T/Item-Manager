@@ -26,7 +26,6 @@ export const proposalReducer = createReducer(
 
     if (hasPendingProposal) {
       console.error("There is a pending proposal that waits to be finalized.");
-      // alert("There is a pending proposal that waits to be finalized."); 
       return {
         ...state,
         creationSuccess: false,
@@ -62,7 +61,6 @@ export const proposalReducer = createReducer(
       };
     } catch (error) {
       console.error("An error occurred while creating the proposal:", error);
-      // alert("An error occurred while creating the proposal."); 
       return {
         ...state,
         creationSuccess: false,
@@ -74,21 +72,32 @@ export const proposalReducer = createReducer(
   on(ProposalActions.counterProposal, (state, { proposalId, newProposal }) => {
     const updatedProposals = JSON.parse(JSON.stringify(state.proposals));
 
-    for (const key in updatedProposals) {
-      updatedProposals[key] = updatedProposals[key].map((proposal: Proposal) => {
-        if (proposal.id === proposalId) {
-          return { ...proposal, status: 'Rejected' as const };
-        }
-        return proposal;
-      });
+    try{
+      for (const key in updatedProposals) {
+        updatedProposals[key] = updatedProposals[key].map((proposal: Proposal) => {
+          if (proposal.id === proposalId) {
+            return { ...proposal, status: 'Rejected' as const };
+          }
+          return proposal;
+        });
 
-      updatedProposals[key].push(newProposal);
-    }
+        updatedProposals[key].push(newProposal);
+      }
 
-    return {
-      ...state,
-      proposals: updatedProposals,
-    };
+      return {
+        ...state,
+        proposals: updatedProposals,
+        creationSuccess: true, 
+          creationError: null,
+      };
+    } catch (error) {
+        console.error("An error occurred while creating the counterproposal:", error);
+        return {
+          ...state,
+          creationSuccess: false,
+          creationError: "Error occurred while creating counterproposal.", 
+        };
+      }
   }),
 
   on(ProposalActions.acceptProposal, (state, { proposalId, userId }) => {

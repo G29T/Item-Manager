@@ -9,7 +9,7 @@ export const createProposal = createAction(
 );
 
 export const counterProposal = createAction(
-  '[Proposal] Counter Proposal',
+  '[Proposal] Counterproposal',
   props<{ proposalId: string; newProposal: Proposal }>()
 );
 
