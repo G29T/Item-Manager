@@ -49,29 +49,6 @@ export class ItemListComponent {
       })
     );
   }
-
-  isSharedItem(item: Item): Observable<boolean> {
-    return this.users$.pipe(
-      map(users => {
-        const matchingUserIds = users
-         // Find users whose partyId matches ownerIds
-          .filter(user => item.ownerIds.includes(user.partyId))
-          .map(user => user.id); 
-  
-        return matchingUserIds.length > 1; 
-      })
-    );
-  }
-  
-
-  // ngOnInit(): void {
-  //   this.store.dispatch(loadItemsByUser());
-
-  //   this.userItems$.subscribe(items => {
-  //     console.log('Selected All Items:', items);
-  //   });
-
-  // }
   
   onSelectItem(item: Item): void {
     this.store.dispatch(selectItem({ item }));
