@@ -16,11 +16,13 @@
         <span *ngIf="proposal.status === 'Withdrawn'" class="material-icons">remove_circle</span>
       </span>
       <div *ngFor="let ownerId of proposal.ownerIds">
-        <p>{{ getOwnerNameById(ownerId) }} - Payment Ratio: {{ proposal.paymentRatios[ownerId] }}</p>
-      </div>
-      <button *ngIf="proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Rejected' && (currentUserId$ | async) === proposal.userId" (click)="withdrawProposal(proposal)">Withdraw</button>
-      <button *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && (currentUserId$ | async) !== proposal.userId" (click)="acceptProposal(proposal)">Accept</button>
-      <button *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && (currentUserId$ | async) !== proposal.userId" (click)="openCounterProposalDialog(proposal)">Reject</button>
+        <ng-container *ngIf="getOwnerNameById(ownerId) | async as ownerName">
+          <p>{{ ownerName }} - Payment Ratio: {{ proposal.paymentRatios[ownerId] }}</p>
+        </ng-container>
+      </div>      
+      <button *ngIf="proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised - Accepted' && proposal.status !== 'Rejected' && (currentUserId$ | async) === proposal.userId" (click)="withdrawProposal(proposal)">Withdraw</button>
+      <button *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised - Accepted' && (currentUserId$ | async) !== proposal.userId" (click)="acceptProposal(proposal)">Accept</button>
+      <button *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised - Accepted' && (currentUserId$ | async) !== proposal.userId" (click)="openCounterProposalDialog(proposal)">Reject</button>
     </li>
   </ul>
   <p *ngIf="!proposals?.length">No proposals available for this item.</p>
