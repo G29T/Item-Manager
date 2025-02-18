@@ -14,6 +14,7 @@ export const ownerReducer = createReducer(
   initialOwnerState,
   on(loadOwnersSuccess, (state, { owners }) => ({
     ...state,
-    owners
+    owners,
   }))
 );
+
