@@ -88,9 +88,9 @@ export class ItemListComponent {
   private sortByCriterion(items: Item[], criterion: 'nameAsc' | 'nameDsc' | 'costAsc' | 'costDsc' | 'pendingStatus'): Item[] {
     switch (criterion) {
       case 'nameAsc':
-        return [...items].sort((a, b) => a.name.localeCompare(b.name)); // A → Z
+        return [...items].sort((a, b) => a.name.localeCompare(b.name)); 
       case 'nameDsc':
-        return [...items].sort((a, b) => b.name.localeCompare(a.name)); // Z → A
+        return [...items].sort((a, b) => b.name.localeCompare(a.name));
       case 'costAsc':
         return [...items].sort((a, b) => a.totalCost - b.totalCost);
       case 'pendingStatus':
