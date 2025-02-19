@@ -65,6 +65,16 @@ export class ProposalHistoryComponent {
     );
   }
 
+  get filterStatusValue(): 'Pending' | 'Accepted' | 'Rejected' | 'Withdrawn' | 'FinalisedAccepted' | '' | null {
+    return this.filterStatusSubject.value;
+  }
+
+// private resetFilters() {
+//   this.sortingCriterion = 'dateDsc';
+//   this.filterStatusSubject.next(null); 
+//   this.updateFilteredProposals(); 
+// }
+
   //kept getUsersFromSameParty and getAcceptedUsersFromSameParty as separate because for further development 
   // I might need getPartyMembers
   getPartyMembers(): Observable<User[]> {
@@ -106,19 +116,28 @@ export class ProposalHistoryComponent {
     );
   }
 
-  setSortingCriterion(criterion: 'dateAsc' | 'dateDsc') {
-    this.sortingCriterion = criterion;
-    this.sortedProposals = this.sortByCriterion(this.sortedProposals, this.sortingCriterion); 
-    this.updateFilteredProposals(); 
-  }
-
   setFilterStatus(status: 'Pending' | 'Accepted' | 'Rejected'  | 'Withdrawn' | 'FinalisedAccepted' | '' | null) {
     this.filterStatusSubject.next(status);
     this.updateFilteredProposals();
   }
 
   private updateFilteredProposals() {
-    this.proposalsByItem$ = of(this.filterProposals(this.sortedProposals)); 
+    this.proposalsByItem$ = this.proposalsByItem$.pipe(
+        map((currentProposals) => {
+            if (currentProposals) {
+                return this.filterProposals(currentProposals);
+            }
+            return []; 
+        })
+    );
+  }
+
+  setSortingCriterion(criterion: 'dateAsc' | 'dateDsc') {
+    this.sortingCriterion = criterion;
+    this.sortedProposals = this.sortByCriterion(this.sortedProposals, this.sortingCriterion); 
+    this.proposalsByItem$ = this.proposalsByItem$.pipe(
+        map(() => this.filterProposals(this.sortedProposals)) 
+    );
   }
 
   private filterProposals(proposals: Proposal[]): Proposal[] {
