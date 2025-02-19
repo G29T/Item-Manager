@@ -1,0 +1,10 @@
+<sort-selector (sortChange)="setSortingCriterion($event)"></sort-selector>
+
+<item-list 
+    [items]="(userItems$ | async) || []"
+    [hasPendingProposals]="hasPendingProposals.bind(this)"
+    (itemSelected)="onSelectItem($event)">
+</item-list>
+
+<proposal-form *ngIf="(selectedItem$ | async) as selectedItem" [item]="selectedItem"></proposal-form>
+<proposal-history></proposal-history>

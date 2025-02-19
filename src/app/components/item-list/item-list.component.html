@@ -1,25 +1,19 @@
-<mat-form-field>
-  <mat-label>Sort By</mat-label>
-  <mat-select (selectionChange)="setSortingCriterion($event.value)">
-    <mat-option value="nameAsc">Name Asc</mat-option>
-    <mat-option value="nameDsc">Name Dsc</mat-option>
-    <mat-option value="costAsc">Total Cost Asc</mat-option>
-    <mat-option value="costDsc">Cost Dsc</mat-option>
-    <mat-option value="pendingStatus">Pending Proposal</mat-option>
-  </mat-select>
-</mat-form-field>
-
 <mat-list>
   <h3 mat-subheader>Items</h3>
-  <mat-list-item *ngFor="let item of userItems$ | async" (click)="onSelectItem(item)">
-    <h4 mat-line>
-      {{ item.name }}
-      <span *ngIf="(hasPendingProposals(item.id) | async)" class="material-icons">hourglass_empty</span>
-      <span *ngIf="item.isShared" class="material-icons">group</span>
-    </h4>
-    <p mat-line>{{ item.description }} - Total Cost: {{ item.totalCost }}</p>
-  </mat-list-item>
+  <ng-container *ngIf="(items.length === 0) else itemList">
+    <mat-list-item>
+      <h4>No items available.</h4> 
+    </mat-list-item>
+  </ng-container>
+  <ng-template #itemList>
+    <mat-list-item *ngFor="let item of items" (click)="onSelectItem(item)">
+      <h4 mat-line>
+        {{ item.name }}
+        <span *ngIf="(hasPendingProposals(item.id) | async)" class="material-icons">hourglass_empty</span>
+        <span *ngIf="item.isShared" class="material-icons">group</span>
+      </h4>
+      <p mat-line>{{ item.description }}</p>
+      <p mat-line>Total Cost: {{ item.totalCost }}</p> 
+    </mat-list-item>
+  </ng-template>
 </mat-list>
-
-<proposal-form *ngIf="(selectedItem$ | async) as selectedItem" [item]="selectedItem"></proposal-form>
-<proposal-history></proposal-history>

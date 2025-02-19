@@ -14,6 +14,7 @@ import { ProposalFormComponent } from './components/proposal-form/proposal-form.
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ProposalHistoryComponent } from './components/proposal-history/proposal-history.component';
 import { ProposalDialogComponent } from './components/proposal-dialog/proposal-dialog.component';
+import { ItemsContainer } from './components/items-container/items-container.component';
 
 @Component({
   selector: 'app-root',
@@ -35,7 +36,8 @@ import { ProposalDialogComponent } from './components/proposal-dialog/proposal-d
     ItemListComponent,
     ProposalFormComponent, 
     ProposalHistoryComponent,
-    ProposalDialogComponent
+    ProposalDialogComponent,
+    ItemsContainer
   ],
   providers: [DataService],
 })
