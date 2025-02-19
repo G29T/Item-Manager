@@ -69,12 +69,6 @@ export class ProposalHistoryComponent {
     return this.filterStatusSubject.value;
   }
 
-// private resetFilters() {
-//   this.sortingCriterion = 'dateDsc';
-//   this.filterStatusSubject.next(null); 
-//   this.updateFilteredProposals(); 
-// }
-
   //kept getUsersFromSameParty and getAcceptedUsersFromSameParty as separate because for further development 
   // I might need getPartyMembers
   getPartyMembers(): Observable<User[]> {
