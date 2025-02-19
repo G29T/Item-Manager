@@ -17,6 +17,33 @@ const initialState: ProposalState = {
 export const proposalReducer = createReducer(
   initialState,
 
+  // since accessing localStorage is generally a synchronous operation
+  // so the logic can also stay in this reducer rather than effects
+  // on(ProposalActions.loadProposals, (state) => {
+  //   try {
+  //     const storedProposals = localStorage.getItem('proposalsFromLocalStorage');
+  //     const parsedProposals = storedProposals ? JSON.parse(storedProposals) : {};
+  
+  //     return {
+  //       ...state,
+  //       proposals: parsedProposals,
+  //     };
+  //   } catch (error) {
+  //     console.error("Error loading proposals from local storage:", error);
+  //     return state;
+  //   }
+  // }),  
+
+  on(ProposalActions.loadProposalsSuccess, (state, { proposals }) => ({
+    ...state,
+    proposals,
+  })),
+  
+  on(ProposalActions.loadProposalsFailure, (state, { error }) => ({
+    ...state,
+    creationError: error,
+  })),  
+
   on(ProposalActions.createProposal, (state, { proposal }) => {
     const userProposals = state.proposals[proposal.userId] || [];
 
@@ -53,6 +80,8 @@ export const proposalReducer = createReducer(
         ];
       });
 
+      localStorage.setItem('proposalsFromLocalStorage', JSON.stringify(updatedProposals));
+
       return {
         ...state,
         proposals: updatedProposals, 
@@ -83,6 +112,8 @@ export const proposalReducer = createReducer(
 
         updatedProposals[key].push(newProposal);
       }
+
+      localStorage.setItem('proposalsFromLocalStorage', JSON.stringify(updatedProposals));
 
       return {
         ...state,
@@ -148,6 +179,8 @@ export const proposalReducer = createReducer(
       });
     }
 
+    localStorage.setItem('proposalsFromLocalStorage', JSON.stringify(updatedProposals));
+
     return {
       ...state,
       proposals: updatedProposals,
@@ -164,6 +197,8 @@ export const proposalReducer = createReducer(
         proposal.id === proposalId ? { ...proposal, status: 'Rejected' as const } : proposal
       );
     });
+
+    localStorage.setItem('proposalsFromLocalStorage', JSON.stringify(updatedProposals));
 
     return {
       ...state,
@@ -184,6 +219,8 @@ export const proposalReducer = createReducer(
       });
     }
 
+    localStorage.setItem('proposalsFromLocalStorage', JSON.stringify(updatedProposals));
+
     return {
       ...state,
       proposals: updatedProposals,
@@ -201,6 +238,8 @@ export const proposalReducer = createReducer(
         return proposal;
       });
     }
+
+    localStorage.setItem('proposalsFromLocalStorage', JSON.stringify(updatedProposals));
 
     return {
       ...state,

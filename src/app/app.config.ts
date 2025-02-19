@@ -5,13 +5,14 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { ItemEffects } from '../store/item/item.effect';
+import { ItemEffects } from '../store/item/item.effects';
 import { itemReducer } from '../store/item/item.reducer'; 
 import { userReducer } from '../store/user/user.reducer';
-import { UserEffects } from '../store/user/user.effect';
+import { UserEffects } from '../store/user/user.effects';
 import { proposalReducer } from '../store/proposal/proposal.reducer';
 import { ownerReducer } from '../store/owner/owner.reducer';
-import { OwnerEffects } from '../store/owner/owner.effect';
+import { OwnerEffects } from '../store/owner/owner.effects';
+import { ProposalEffects } from '../store/proposal/proposal.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,7 +25,7 @@ export const appConfig: ApplicationConfig = {
       proposals: proposalReducer, 
       owners: ownerReducer,
     }),  
-    provideEffects([ItemEffects, UserEffects, OwnerEffects]),
+    provideEffects([ItemEffects, UserEffects, OwnerEffects, ProposalEffects]),
     provideStoreDevtools({ maxAge: 24, logOnly: !isDevMode() })
   ],
 };

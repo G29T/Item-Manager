@@ -3,6 +3,16 @@ import { Proposal } from '../../app/models/proposal.model';
 
 export const loadProposals = createAction('[Proposal] Load Proposals');
 
+export const loadProposalsSuccess = createAction(
+  '[Proposal] Load Proposals Success',
+  props<{ proposals: { [userId: number]: Proposal[] } }>()
+);
+
+export const loadProposalsFailure = createAction(
+  '[Proposal] Load Proposals Failure',
+  props<{ error: string }>()
+);
+
 export const createProposal = createAction(
   '[Proposal] Create Proposal',
   props<{ proposal: Proposal }>()

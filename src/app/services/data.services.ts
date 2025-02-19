@@ -9,6 +9,7 @@ import { LocalStorageService } from './local-storage.service';
 import itemsJson from '../../assets/items.json'
 import usersJson from '../../assets/users.json';
 import ownersJson from '../../assets/owners.json';
+import { Proposal } from '../models/proposal.model';
 
 @Injectable({
   providedIn: 'root',
@@ -90,24 +91,13 @@ export class DataService {
     const users = this.getUsers();
     const user = (await users).find(user => user.id === currentUserId);
 
-    // console.log('users boolean ' + JSON.stringify(user?.partyId));
     return user ? user.partyId : 0;
   }
 
-  // createProposal(itemId: number, ratios: { [key: number]: number }, comment: string): void {
-  //   const currentUserId = this.store.select(selectCurrentUserId); 
-  //   const proposal = {
-  //     itemId,
-  //     ratios,
-  //     comment,
-  //     createdAt: new Date(),
-  //     createdBy: currentUserId, 
-  //   };
-  //   this.proposals.push(proposal);
-  //   this.saveProposals();
-  // }
 
-  // private saveProposals(): void {
-  //   localStorage.setItem('proposals', JSON.stringify(this.proposals));
-  // }
+  getProposalsFromLocalStorage(){
+    const storedProposals = localStorage.getItem('proposalsFromLocalStorage');
+    
+    return storedProposals ? JSON.parse(storedProposals) as { [userId: number]: Proposal[] } : {};
+  }
 }

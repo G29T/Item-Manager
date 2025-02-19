@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { loadOwnersSuccess } from './owner.actions';
+import { loadOwnersFailure, loadOwnersSuccess } from './owner.actions';
 import { Owner } from '../../app/models/owner.model';
 
 export interface OwnerState {
@@ -15,6 +15,11 @@ export const ownerReducer = createReducer(
   on(loadOwnersSuccess, (state, { owners }) => ({
     ...state,
     owners,
+  })),
+  on(loadOwnersFailure, (state, { error }) => ({
+    ...state,
+    loading: false, 
+    error, 
   }))
 );
 

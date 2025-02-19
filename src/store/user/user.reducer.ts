@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { setCurrentUser, clearCurrentUser, loadUsersSuccess, selectUser } from './user.actions';
+import { setCurrentUser, loadUsersSuccess, selectUser } from './user.actions';
 import { User } from '../../app/models/user.model';
 
 export interface UsersState {
@@ -18,6 +18,5 @@ export interface UsersState {
     initialState,
     on(loadUsersSuccess, (state, { users }) => ({ ...state, users })),
     on(setCurrentUser, (state, { userId }) => ({ ...state, currentUserId: userId })),
-    on(selectUser, (state, { user }) => ({ ...state, selectedUser: user })), // Update selectedUser when a user is selected
-    on(clearCurrentUser, state => ({ ...state, currentUserId: null }))
+    on(selectUser, (state, { user }) => ({ ...state, selectedUser: user }))
   );

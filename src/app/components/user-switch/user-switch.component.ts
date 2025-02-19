@@ -11,6 +11,8 @@ import { selectCurrentUserId, selectUsers } from '../../../store/user/user.selec
 import { map, Observable, take } from 'rxjs';
 import { UsersState } from '../../../store/user/user.reducer';
 import { loadOwners } from '../../../store/owner/owner.actions';
+import { loadProposals } from '../../../store/proposal/proposal.actions';
+import { selectAllProposals } from '../../../store/proposal/proposal.selector';
 
 @Component({
     selector: 'user-switch',
@@ -29,8 +31,13 @@ export class UserSwitchComponent implements OnInit {
 
     ngOnInit(): void {
         this.store.dispatch(loadUsers());
-        // this.store.dispatch(loadItems());
+        this.store.dispatch(loadItems());
         this.store.dispatch(loadOwners());
+        this.store.dispatch(loadProposals());
+
+        this.store.select(selectAllProposals).subscribe(proposals => {
+            console.log('Proposals after loading:', proposals);
+          });
     }
 
     switchUser(user: User): void {
