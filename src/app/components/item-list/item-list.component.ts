@@ -28,11 +28,12 @@ export class ItemListComponent {
   selectedItem$: Observable<Item | null>;
   currentUserId$: Observable<number | null>;
   users$: Observable<User[]>;
-  sortingCriterion: 'nameAsc' | 'costAsc' | 'pendingStatus' = 'nameAsc';
+  sortingCriterion: 'nameAsc' | 'nameDsc' | 'costAsc' | 'costDsc' | 'pendingStatus' = 'nameAsc';
 
   constructor(private store: Store<ItemsState>) {
     this.currentUserId$ = this.store.select(selectCurrentUserId);
-    this.userItems$ = this.store.select(selectItemsByUser);
+    this.userItems$ = this.store.select(selectItemsByUser).pipe(
+      map(items => this.sortByCriterion(items, 'nameAsc')));
     this.selectedItem$ = this.store.select(selectSelectedItem);
     this.users$ = this.store.select(selectUsers); 
   }
@@ -58,7 +59,7 @@ export class ItemListComponent {
     this.store.dispatch(selectItem({ item }));
   }
   
-  setSortingCriterion(criterion: 'nameAsc' | 'costAsc' | 'pendingStatus') {
+  setSortingCriterion(criterion: 'nameAsc' | 'nameDsc' | 'costAsc' | 'costDsc' | 'pendingStatus') {
     this.sortingCriterion = criterion;
     this.sortItems(); 
   }
@@ -84,16 +85,16 @@ export class ItemListComponent {
     );
   }
 
-  private sortByCriterion(items: Item[], criterion: 'nameAsc' | 'costAsc' | 'pendingStatus'): Item[] {
+  private sortByCriterion(items: Item[], criterion: 'nameAsc' | 'nameDsc' | 'costAsc' | 'costDsc' | 'pendingStatus'): Item[] {
     switch (criterion) {
       case 'nameAsc':
-        return items.sort((a, b) => a.name.localeCompare(b.name));
+        return [...items].sort((a, b) => a.name.localeCompare(b.name)); // A → Z
+      case 'nameDsc':
+        return [...items].sort((a, b) => b.name.localeCompare(a.name)); // Z → A
       case 'costAsc':
-        return items.sort((a, b) => a.totalCost - b.totalCost);
+        return [...items].sort((a, b) => a.totalCost - b.totalCost);
       case 'pendingStatus':
-        return items.sort((a, b) => {
-          return (b.hasPending ? 1 : 0) - (a.hasPending ? 1 : 0);
-        });
+        return [...items].sort((a, b) => (b.hasPending ? 1 : 0) - (a.hasPending ? 1 : 0));
       default:
         return items;
     }
