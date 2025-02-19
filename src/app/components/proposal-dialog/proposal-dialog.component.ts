@@ -5,7 +5,7 @@ import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/fo
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { selectCurrentUserId, selectUsers } from '../../../store/user/user.selectors';
+import { selectCurrentUserId, selectSelectedUser, selectUsers } from '../../../store/user/user.selectors';
 import { Observable, take } from 'rxjs';
 import { DataService } from '../../services/data.services';
 import { Store } from '@ngrx/store';
@@ -22,74 +22,83 @@ import { selectProposalState } from '../../../store/proposal/proposal.selector';
   imports: [MatFormField, MatLabel, MatButton, CommonModule, FormsModule, MatFormFieldModule, MatInputModule, MatInput],
 })
 export class ProposalDialogComponent {
-    comment: string = '';
-    paymentRatios: { [ownerId: number]: number } = {};
-    currentUserId$: Observable<number | null>;
-    users$: Observable<User[]>; 
+  comment: string = '';
+  paymentRatios: { [ownerId: number]: number } = {};
+  currentUser$: Observable<User | null>
+  currentUserId$: Observable<number | null>;
+  users$: Observable<User[]>; 
 
-    constructor(
-        public dialogRef: MatDialogRef<ProposalDialogComponent>,
-        private dataService: DataService,
-        private store: Store,
-        @Inject(MAT_DIALOG_DATA) 
-        public data: { selectedProposal: Proposal }
-    ) {    
-        this.currentUserId$ = this.store.select(selectCurrentUserId); 
-        this.users$ = this.store.select(selectUsers); 
+  constructor(
+    public dialogRef: MatDialogRef<ProposalDialogComponent>,
+    private dataService: DataService,
+    private store: Store,
+    @Inject(MAT_DIALOG_DATA) 
+    public data: { selectedProposal: Proposal }
+  ) {    
+      this.currentUser$ = this.store.select(selectSelectedUser);
+      this.currentUserId$ = this.store.select(selectCurrentUserId); 
+      this.users$ = this.store.select(selectUsers); 
     }
 
-    onNoClick(): void {
-        this.dialogRef.close();
-    }
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 
-    submitCounterProposal(): void {
-        const item = this.data.selectedProposal; 
-    
-        this.currentUserId$.pipe(take(1)).subscribe((userId) => {
-        if (!item || !item.ownerIds || userId === null) return;
-    
-        this.users$.pipe(take(1)).subscribe(users => {
-            const usersResponses: { userId: number; accept: boolean }[] = users
-            .filter(user => 
-                item.ownerIds.includes(user.partyId) && user.id !== userId)
-            .map(user => ({ userId: user.id, accept: false }));
-    
-            const counterProposalData: Proposal = {
-            id: Math.random().toString(36).substr(2, 9),
-            itemId: item.itemId,
-            userId: userId,
-            ownerIds: item.ownerIds,
-            paymentRatios: item.ownerIds.reduce((acc, ownerId) => {
-                acc[ownerId] = this.paymentRatios[ownerId] || 0;
-                return acc;
-            }, {} as { [key: number]: number }), 
-            comment: this.comment || '',
-            createdAt: new Date(),
-            status: 'Pending',
-            counterProposalToId: item.id,
-            usersResponses,
-            };
-    
-            this.store.dispatch(counterProposal({ 
-            proposalId: item.id, 
-            newProposal: counterProposalData 
-            }));
+  submitCounterProposal(): void {
+    const item = this.data.selectedProposal;
+  
+    this.currentUser$.pipe(take(1)).subscribe((currentUser) => {
+      if (!item || !item.ownerIds || currentUser === null) return;
+  
+      this.users$.pipe(take(1)).subscribe(users => {
+        const usersResponses: { userId: number; accept: boolean }[] = users
+          .filter(user =>
+            item.ownerIds.includes(user.partyId) && user.id !== currentUser.id)
+          .map(user => ({ userId: user.id, accept: false }));
+  
+        if (!currentUser) {
+          alert('You must select a user to submit a counterproposal.');
+          return; 
+        }
+  
+        const counterProposalData: Proposal = {
+          id: Math.random().toString(36).substr(2, 9),
+          itemId: item.itemId,
+          userId: currentUser.id,
+          ownerIds: item.ownerIds,
+          creatorInfo: currentUser, 
+          paymentRatios: item.ownerIds.reduce((acc, ownerId) => {
+            acc[ownerId] = this.paymentRatios[ownerId] || 0;
+            return acc;
+          }, {} as { [key: number]: number }),
+          comment: this.comment || '',
+          createdAt: new Date(),
+          status: 'Pending',
+          counterProposalToId: item.id,
+          usersResponses,
+        };
+  
+        this.store.dispatch(counterProposal({
+          proposalId: item.id,
+          newProposal: counterProposalData
+        }));
 
-            this.store.select(selectProposalState).pipe(take(1)).subscribe(state => {
-                if (state.creationSuccess) {
-                  alert("Counterproposal created successfully!");
-                }
-                if (state.creationError) {
-                  alert(`Error: ${state.creationError}`);
-                }
-              });
-
-
-            this.store.dispatch(rejectProposal({ proposalId: item.id }));
-            
-            this.dialogRef.close(counterProposalData);
-
+        this.store.select(selectProposalState).pipe(take(1)).subscribe(state => {
+          if (state.creationSuccess) {
+            alert("Counterproposal created successfully!");
+          }
+          if (state.creationError) {
+            alert(`Error: ${state.creationError}`);
+          }
         });
+
+        this.store.dispatch(rejectProposal({ proposalId: item.id }));
+
+        this.dialogRef.close(counterProposalData);
+      });
     });
   }
-}  
+}
+
+
+    

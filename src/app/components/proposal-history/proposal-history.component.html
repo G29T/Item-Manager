@@ -38,6 +38,15 @@
         <span *ngIf="proposal.status === 'Rejected'" class="material-icons">cancel</span>
         <span *ngIf="proposal.status === 'Withdrawn'" class="material-icons">remove_circle</span>
       </span>
+
+
+      <ng-container *ngIf="(currentUserId$ | async) as currentUserId">
+        <ng-container *ngIf="proposal.creatorInfo">
+          <p *ngIf="currentUserId === proposal.creatorInfo.partyId">
+            Created by: <strong>{{ proposal.creatorInfo.name }}</strong>
+          </p>
+        </ng-container>
+      </ng-container>
       <div *ngFor="let ownerId of proposal.ownerIds">
         <ng-container *ngIf="getOwnerNameById(ownerId) | async as ownerName">
           <p>{{ ownerName }} - Payment Ratio: {{ proposal.paymentRatios[ownerId] }}</p>
@@ -46,6 +55,17 @@
       <button *ngIf="proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised - Accepted' && proposal.status !== 'Rejected' && (currentUserId$ | async) === proposal.userId" (click)="withdrawProposal(proposal)">Withdraw</button>
       <button *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised - Accepted' && (currentUserId$ | async) !== proposal.userId" (click)="acceptProposal(proposal)">Accept</button>
       <button *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised - Accepted' && (currentUserId$ | async) !== proposal.userId" (click)="openCounterProposalDialog(proposal)">Reject</button>
+    
+      <span *ngIf="(getAcceptedPartyMembers(proposal) | async) as acceptedUsers">
+        <ng-container *ngIf="acceptedUsers.length > 0">
+          Accepted by: 
+          <span *ngFor="let user of acceptedUsers; let isLast = last">
+            {{ user.name }}<span *ngIf="!isLast">, </span>
+          </span>
+        </ng-container>
+      </span>
+      
+    
     </li>
   </ul>
   <p *ngIf="!proposals?.length">No proposals available for this item.</p>

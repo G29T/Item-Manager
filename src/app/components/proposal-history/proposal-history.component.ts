@@ -10,13 +10,14 @@ import { Item } from '../../models/items.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ProposalDialogComponent } from '../proposal-dialog/proposal-dialog.component';
 import { acceptProposal, setBackToPendingProposal, withdrawProposal } from '../../../store/proposal/proposal.actions';
-import { selectCurrentUserId } from '../../../store/user/user.selectors';
+import { selectCurrentUserId, selectCurrentUserPartyId, selectUsers } from '../../../store/user/user.selectors';
 import { Owner } from '../../models/owner.model';
 import { selectOwners } from '../../../store/owner/owner.selector';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'proposal-history',
@@ -29,6 +30,7 @@ export class ProposalHistoryComponent {
   currentUserId$: Observable<number | null>;
   proposalsByItem$: Observable<Proposal[] | null>;
   owners$: Observable<Owner[]>;
+  currentUserPartyId$: Observable<number>;
   private sortedProposals: Proposal[] = []; 
   sortingCriterion: 'dateAsc' | 'dateDsc' = 'dateDsc';
   private filterStatusSubject = new BehaviorSubject<'Pending' | 'Accepted' | 'Rejected'  | 'Withdrawn' | 'FinalisedAccepted' | '' | null>(null);
@@ -38,6 +40,7 @@ export class ProposalHistoryComponent {
     this.currentUserId$ = this.store.select(selectCurrentUserId);
     this.owners$ = this.store.select(selectOwners);
     this.selectedItem$ = this.store.select(selectSelectedItem);
+    this.currentUserPartyId$ = this.store.select(selectCurrentUserPartyId);
     this.proposalsByItem$ = this.selectedItem$.pipe(
       switchMap((item) => {
         if (!item) {
@@ -62,6 +65,38 @@ export class ProposalHistoryComponent {
     );
   }
 
+  //kept getUsersFromSameParty and getAcceptedUsersFromSameParty as separate because for further development 
+  // I might need getPartyMembers
+  getPartyMembers(): Observable<User[]> {
+    return this.currentUserPartyId$.pipe(
+      switchMap((partyId) => {
+        if (partyId === null) return of([]); 
+
+        return this.store.select(selectUsers).pipe(
+          map(users => {
+            return users.filter(user => user.partyId === partyId); 
+          })
+        );
+      })
+    );
+  }
+  
+  getAcceptedPartyMembers(proposal: Proposal): Observable<User[]> {
+    return this.getPartyMembers().pipe(
+      switchMap((usersFromSameParty) => {
+        const acceptedUserIds = proposal.usersResponses
+          .filter(response => response.accept)
+          .map(response => response.userId);
+
+        const acceptedUsers = usersFromSameParty.filter(user =>
+          acceptedUserIds.includes(user.id) 
+        );
+  
+        return of(acceptedUsers); 
+      })
+    );
+  }
+  
   getOwnerNameById(ownerId: number): Observable<string> {
     return this.owners$.pipe(
       map(owners => {

@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { loadItems, loadItemsByUser, selectItem } from '../../../store/item/item.actions';
-import { loadUsers, setCurrentUser } from '../../../store/user/user.actions';
+import { loadUsers, selectUser, setCurrentUser } from '../../../store/user/user.actions';
 import { selectCurrentUserId, selectUsers } from '../../../store/user/user.selectors';
 import { map, Observable, take } from 'rxjs';
 import { UsersState } from '../../../store/user/user.reducer';
@@ -33,8 +33,9 @@ export class UserSwitchComponent implements OnInit {
         this.store.dispatch(loadOwners());
     }
 
-    switchUser(userId: number): void {
-        this.store.dispatch(setCurrentUser({ userId })); 
+    switchUser(user: User): void {
+        this.store.dispatch(selectUser({ user })); 
+        this.store.dispatch(setCurrentUser({ userId: user.id })); 
         this.store.dispatch(selectItem({ item: null })); 
     
         this.store.select(selectCurrentUserId).pipe(
@@ -44,7 +45,7 @@ export class UserSwitchComponent implements OnInit {
                 return currentUserId;
             })
         ).subscribe(currentUserId => {
-            if (currentUserId === userId) {
+            if (currentUserId === user.id) { 
                 console.log('User ID is set correctly. Loading items...');
                 this.store.dispatch(loadItemsByUser());
             } else {

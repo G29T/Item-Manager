@@ -1,7 +1,10 @@
+import { User } from "./user.model";
+
 export interface Proposal {
   id: string;
   itemId: number;
-  userId: number;  
+  userId: number;   //creator id
+  creatorInfo: User | null;
   ownerIds: number[];  
   paymentRatios: { [key: number]: number };
   comment: string;

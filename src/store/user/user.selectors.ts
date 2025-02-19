@@ -17,3 +17,21 @@ export const selectSelectedUser = createSelector(
   selectUserState,
   (state: UsersState) => state.selectedUser
 );
+
+export const selectCurrentUserPartyId = createSelector(
+  selectUsers,
+  selectCurrentUserId,
+  (users, currentUserId) => {
+    const currentUser = users.find(user => user.id === currentUserId);
+    return currentUser ? currentUser.partyId : 0;  //0 because the current partyIds start from 1
+  }
+);
+
+// export const selectCurrentUserPartyId = createSelector(
+//   selectUsers,
+//   selectCurrentUserId,
+//   (users, currentUserId) => {
+//     const currentUser = users.find(user => user.id === currentUserId);
+//     return currentUser ? currentUser.partyId : 0;  //0 because the current partyIds start from 1
+//   }
+// );
