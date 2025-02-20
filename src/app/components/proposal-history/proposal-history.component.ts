@@ -23,6 +23,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatCard, MatCardModule } from '@angular/material/card';
 import { FilterProposalsComponent } from '../filter-proposals/filter-proposals.component';
 import { SortProposalsComponent } from '../sort-proposals/sort-proposals.component';
+import { ProposalListComponent } from '../proposal-list/proposal-list.component';
 
 
 @Component({
@@ -31,7 +32,7 @@ import { SortProposalsComponent } from '../sort-proposals/sort-proposals.compone
   styleUrls: ['./proposal-history.component.scss'],
   imports: [AsyncPipe, CommonModule, FormsModule, NgIf, MatFormField, 
     MatLabel, MatOptionModule, MatSelectModule, MatListModule, MatCardModule, MatIcon, FilterProposalsComponent,
-  SortProposalsComponent
+  SortProposalsComponent, ProposalListComponent
   ],
 })
 export class ProposalHistoryComponent {
@@ -159,45 +160,5 @@ export class ProposalHistoryComponent {
       default:
         return proposals;
     }
-  }
-
-  openCounterProposalDialog(proposal: Proposal): void {
-    const dialogRef = this.dialog.open(CounterProposalDialogComponent, {
-      width: '400px',
-      data: {
-        dialogTitle: 'Counterproposal',
-        selectedProposal: proposal,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Counterproposal submitted:', result);
-      }
-    });
-  }
-
-  withdrawProposal(proposal: Proposal): void {
-    this.currentUserId$.pipe(take(1)).subscribe(userId => {
-      if (userId !== null) {
-        this.store.dispatch(withdrawProposal({ proposalId: proposal.id }));
-
-        if (proposal.counterProposalToId) {
-          this.store.dispatch(setBackToPendingProposal({ proposalId: proposal.counterProposalToId }));
-        }
-      } else {
-        console.error('User ID is null, cannot withdraw proposal');
-      }
-    });
-  }
-
-  acceptProposal(proposal: Proposal): void {
-    this.currentUserId$.pipe(take(1)).subscribe(userId => {
-      if (userId !== null) {
-        this.store.dispatch(acceptProposal({ proposalId: proposal.id, userId }));
-      } else {
-        console.error('User ID is null, cannot accept proposal');
-      }
-    });
   }
 }
