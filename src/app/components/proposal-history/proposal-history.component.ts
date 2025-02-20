@@ -18,13 +18,17 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { User } from '../../models/user.model';
+import { MatIcon } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatCard, MatCardModule } from '@angular/material/card';
 
 
 @Component({
   selector: 'proposal-history',
   templateUrl: './proposal-history.component.html',
-  styleUrls: ['./proposal-history.component.css'],
-  imports: [AsyncPipe, CommonModule, FormsModule, NgIf, MatFormField, MatLabel, MatOptionModule, MatSelectModule],
+  styleUrls: ['./proposal-history.component.scss'],
+  imports: [AsyncPipe, CommonModule, FormsModule, NgIf, MatFormField, 
+    MatLabel, MatOptionModule, MatSelectModule, MatListModule, MatCardModule, MatIcon],
 })
 export class ProposalHistoryComponent {
   selectedItem$: Observable<Item | null>;
