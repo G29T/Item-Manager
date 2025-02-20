@@ -17,7 +17,7 @@
           <mat-icon *ngIf="(hasPendingProposals(item.id) | async)">hourglass_empty</mat-icon >
           <mat-icon *ngIf="item.isShared">group</mat-icon >
           <button mat-icon-button [disabled]="!item.isShared" >
-            <mat-icon>send</mat-icon>
+            <mat-icon>local_offer</mat-icon>
           </button>
         </h4>
         <p mat-line>{{ item.description }}</p>
