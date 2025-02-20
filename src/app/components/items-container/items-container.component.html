@@ -1,4 +1,4 @@
-<sort-selector (sortChange)="setSortingCriterion($event)"></sort-selector>
+<sort-items (sortChange)="setSortingCriterion($event)"></sort-items>
 
 <item-list 
     [items]="(userItems$ | async) || []"

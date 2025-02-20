@@ -9,7 +9,7 @@ import { ItemsState } from '../../../store/item/item.reducer';
 import { ProposalHistoryComponent } from '../proposal-history/proposal-history.component';
 import { selectCurrentUserId, selectUsers } from '../../../store/user/user.selectors';
 import { User } from '../../models/user.model';
-import { SortSelectorComponent } from '../sort-selector/sort-selector.component';
+import { SortItemsComponent } from '../sort-items/sort-items.component';
 import { ItemListComponent } from '../item-list/item-list.component';
 import { ItemUtilsService } from '../../services/item-utils.service';
 
@@ -17,7 +17,7 @@ import { ItemUtilsService } from '../../services/item-utils.service';
   selector: 'items-container',
   templateUrl: './items-container.component.html',
   styleUrls: ['./items-container.component.scss'],
-  imports: [SortSelectorComponent, ItemListComponent, ProposalHistoryComponent, CommonModule, AsyncPipe],
+  imports: [SortItemsComponent, ItemListComponent, ProposalHistoryComponent, CommonModule, AsyncPipe],
 })
 export class ItemsContainer {
     userItems$: Observable<Item[]>;

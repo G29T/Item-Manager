@@ -4,12 +4,12 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
 @Component({
-  selector: 'sort-selector',
-  templateUrl: './sort-selector.component.html',
-  styleUrls: ['./sort-selector.component.scss'],
+  selector: 'sort-items',
+  templateUrl: './sort-items.component.html',
+  styleUrls: ['./sort-items.component.scss'],
   imports: [MatFormField, MatLabel, MatOptionModule, MatSelectModule],
 })
-export class SortSelectorComponent {
+export class SortItemsComponent {
   @Output() sortChange = new EventEmitter<string>();
 
   onSortChange(value: string) {
