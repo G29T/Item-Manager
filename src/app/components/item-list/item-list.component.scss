@@ -1,21 +1,103 @@
 mat-list {
-  margin: 20px 0;
-}
+  background-color: #ffffff;
+  border-radius: 8px; 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+  padding: 16px; 
 
-mat-list-item {
-  margin: 10px 0;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  padding: 10px; 
-  white-space: normal; 
-  overflow: hidden; 
-  text-overflow: ellipsis;
-}
+  h3[mat-subheader] {
+    font-size: 1.5rem; 
+    color: #3f51b5; 
+    margin-bottom: 12px; 
+  }
 
-mat-list-item:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
+  mat-list-item {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    padding: 10px; 
+    cursor: pointer; 
+    transition: background-color 0.2s, transform 0.2s; 
+    margin-bottom: 5px; 
+    min-height: fit-content;
 
-h4, p {
-  margin: 0; 
+    &:hover {
+      background-color: #f5f5f5;
+      transform: scale(1.02);
+    }
+
+    &.selected {
+      background-color: #e0e0e0;
+      font-weight: bold; 
+    }
+
+    .item-content {
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      text-align: center;
+      width: 100%; 
+
+      h4 {
+        font-size: 1.2rem; 
+        font-weight: 600; 
+        color: #2c3e50; 
+        display: flex;
+        align-items: center; 
+        margin-bottom: 10px;
+
+        mat-icon {
+          margin-left: 8px; 
+          color: #3f51b5; 
+          font-size: 1.4rem; 
+        }
+
+        button[mat-icon-button] {
+          margin-left: 8px; 
+          color: #3f51b5;
+          font-size: 1.4rem; 
+          border-radius: 50%; 
+          width: 38px;
+          height: 38px;
+          min-width: 38px; 
+          min-height: 38px;
+          display: flex; 
+          align-items: center;
+          justify-content: center;
+          padding: 0px;
+          transition: background-color 0.3s, transform 0.2s ease-in-out; 
+        
+          &:hover {
+            background-color: rgba(63, 81, 181, 0.1); 
+            transform: scale(1.1); 
+          }
+        
+          &:disabled {
+            color: #ccc !important; 
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none; 
+          }
+        
+          mat-icon {
+            font-size: 20px;
+            color: inherit; 
+          }
+        }
+      }
+
+      p {
+        font-size: 1rem; 
+        color: #555; 
+        font-weight: 400; 
+        line-height: 1.5; 
+        margin: 0; 
+      }
+
+      p:last-of-type {
+        font-weight: 500; 
+        color: #218b4e; 
+        margin-top: 5px; 
+      }
+    }
+  }
 }

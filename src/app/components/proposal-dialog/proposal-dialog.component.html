@@ -1,18 +1,30 @@
-<h2 mat-dialog-title>Create Counterproposal</h2>
-<div mat-dialog-content>
-  <mat-form-field>
+<h2 mat-dialog-title>{{ data.dialogTitle }}</h2>
+<div mat-dialog-content class="custom-dialog-content">
+  <mat-form-field class="full-width">
     <mat-label>Comment</mat-label>
-    <input matInput [(ngModel)]="comment" required />
+    <input matInput [(ngModel)]="comment" name="proposalComment" required />
   </mat-form-field>
 
   <div *ngFor="let owner of data.selectedProposal.ownerIds">
-    <mat-form-field>
-      <mat-label>Payment Ratio for {{ owner }}</mat-label>
-      <input matInput type="number" [(ngModel)]="paymentRatios[owner]" name="paymentRatio_{{ owner }}" placeholder="Payment Ratio" required />
-    </mat-form-field>
+    <ng-container *ngIf="getOwnerNameById(owner) | async as ownerName">
+      <mat-form-field class="full-width">
+        <mat-label>Payment Ratio for {{ ownerName }}</mat-label>
+        <input matInput type="number" [(ngModel)]="paymentRatios[owner]" name="paymentRatio_{{ ownerName }}" placeholder="%" required
+          (ngModelChange)="calculateTotalPaymentRatio()" 
+        />
+      </mat-form-field>
+    </ng-container>
   </div>
+
+  <mat-error *ngIf="!isFormValid() && totalPaymentRatio !== 100" class="error-message">Total payment ratios must equal 100%.</mat-error>
+  <mat-error *ngIf="hasInvalidPaymentRatio()">
+    Payment ratio must be between 0 and 100.
+  </mat-error>
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions class="custom-dialog-actions"> 
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button (click)="submitCounterProposal()">Submit</button>
+  <button mat-button (click)="submitCounterProposal()" [disabled]="!isFormValid()">
+    Submit
+  </button>  
 </div>
+ 

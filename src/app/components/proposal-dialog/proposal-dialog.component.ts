@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Proposal } from '../../models/proposal.model';
-import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatError, MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { selectCurrentUserId, selectSelectedUser, selectUsers } from '../../../store/user/user.selectors';
 import { Observable, take } from 'rxjs';
 import { DataService } from '../../services/data.services';
@@ -14,16 +14,20 @@ import { counterProposal } from '../../../store/proposal/proposal.actions';
 import { FormsModule } from '@angular/forms';
 import { User } from '../../models/user.model';
 import { selectProposalState } from '../../../store/proposal/proposal.selector';
+import { selectOwnerNameById } from '../../../store/owner/owner.selector';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'proposal-dialog',
   templateUrl: './proposal-dialog.component.html',
-  styleUrls: ['./proposal-dialog.component.css'],
-  imports: [MatFormField, MatLabel, MatButton, CommonModule, FormsModule, MatFormFieldModule, MatInputModule, MatInput],
+  styleUrls: ['./proposal-dialog.component.scss'],
+  imports: [MatFormField, MatLabel, MatButton, CommonModule, NgClass ,FormsModule, MatFormFieldModule, MatInputModule, MatInput, MatError],
 })
 export class ProposalDialogComponent {
   comment: string = '';
   paymentRatios: { [ownerId: number]: number } = {};
+  paymentRatioErrors: { [ownerId:  number]: boolean } = {}; 
+  totalPaymentRatio: number = 0;
   currentUser$: Observable<User | null>
   currentUserId$: Observable<number | null>;
   users$: Observable<User[]>; 
@@ -33,18 +37,56 @@ export class ProposalDialogComponent {
     private dataService: DataService,
     private store: Store,
     @Inject(MAT_DIALOG_DATA) 
-    public data: { selectedProposal: Proposal }
+    public data: { dialogTitle: string; selectedProposal: Proposal }
   ) {    
       this.currentUser$ = this.store.select(selectSelectedUser);
       this.currentUserId$ = this.store.select(selectCurrentUserId); 
       this.users$ = this.store.select(selectUsers); 
     }
 
+  getOwnerNameById(ownerId: number): Observable<string> {
+    return this.store.select(selectOwnerNameById(ownerId));
+  }
+
+  calculateTotalPaymentRatio(): void {
+    this.totalPaymentRatio = Object.values(this.paymentRatios).reduce((acc, val) => acc + (val || 0), 0);
+    
+    Object.keys(this.paymentRatios).forEach(key => {
+      const ownerId = Number(key); 
+      const value = this.paymentRatios[ownerId] || 0;
+      this.paymentRatioErrors[ownerId] = value < 0 || value > 100;
+    });
+  }
+
+  isPaymentRatioInvalid(ownerId: number): boolean {
+    return this.paymentRatioErrors[ownerId];
+  }
+
+
+  hasInvalidPaymentRatio(): boolean {
+    return this.data.selectedProposal.ownerIds.some(owner => this.isPaymentRatioInvalid(owner));
+  }
+    
+  isFormValid(): boolean {
+    const allFieldsFilled = this.data.selectedProposal.ownerIds.every(owner => 
+      this.paymentRatios[owner] !== undefined && 
+      this.paymentRatios[owner] !== null && 
+      this.paymentRatios[owner].toString().trim() !== ''
+    ) && this.comment?.trim() !== ''; 
+    
+  
+    return allFieldsFilled && this.totalPaymentRatio === 100 && !this.hasInvalidPaymentRatio();
+  }
+  
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   submitCounterProposal(): void {
+    if (!this.isFormValid()) {
+      return; // Prevent submission if the form is invalid
+    }
+
     const item = this.data.selectedProposal;
   
     this.currentUser$.pipe(take(1)).subscribe((currentUser) => {
@@ -62,7 +104,7 @@ export class ProposalDialogComponent {
         }
   
         const counterProposalData: Proposal = {
-          id: Math.random().toString(36).substr(2, 9),
+          id: uuidv4(),
           itemId: item.itemId,
           userId: currentUser.id,
           ownerIds: item.ownerIds,
@@ -85,7 +127,7 @@ export class ProposalDialogComponent {
 
         this.store.select(selectProposalState).pipe(take(1)).subscribe(state => {
           if (state.creationSuccess) {
-            alert("Counterproposal created successfully!");
+            alert(`${this.data.dialogTitle} created successfully!`);
           }
           if (state.creationError) {
             alert(`Error: ${state.creationError}`);

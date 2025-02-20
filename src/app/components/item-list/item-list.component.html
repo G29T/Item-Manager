@@ -2,18 +2,27 @@
   <h3 mat-subheader>Items</h3>
   <ng-container *ngIf="(items.length === 0) else itemList">
     <mat-list-item>
-      <h4>No items available.</h4> 
+      <h4>No items available.</h4>
     </mat-list-item>
   </ng-container>
   <ng-template #itemList>
-    <mat-list-item *ngFor="let item of items" (click)="onSelectItem(item)">
-      <h4 mat-line>
-        {{ item.name }}
-        <span *ngIf="(hasPendingProposals(item.id) | async)" class="material-icons">hourglass_empty</span>
-        <span *ngIf="item.isShared" class="material-icons">group</span>
-      </h4>
-      <p mat-line>{{ item.description }}</p>
-      <p mat-line>Total Cost: {{ item.totalCost }}</p> 
+    <mat-list-item 
+      *ngFor="let item of items" 
+      (click)="onSelectItem(item)"
+      [ngClass]="{'selected': selectedItemId === item.id}"> 
+
+      <div class="item-content"> 
+        <h4 mat-line>
+          {{ item.name }}
+          <mat-icon *ngIf="(hasPendingProposals(item.id) | async)">hourglass_empty</mat-icon >
+          <mat-icon *ngIf="item.isShared">group</mat-icon >
+          <button mat-icon-button [disabled]="!item.isShared" >
+            <mat-icon>send</mat-icon>
+          </button>
+        </h4>
+        <p mat-line>{{ item.description }}</p>
+        <p mat-line>Total Cost: {{ item.totalCost }}</p>
+      </div> 
     </mat-list-item>
   </ng-template>
 </mat-list>

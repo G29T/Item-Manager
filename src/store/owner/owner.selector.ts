@@ -8,3 +8,10 @@ export const selectOwners = createSelector(
     (state: OwnerState) => state.owners
 );
 
+export const selectOwnerNameById = (ownerId: number) => createSelector(
+    selectOwnerState,
+    (state: OwnerState) => {
+      const owner = state.owners.find(owner => owner.id === ownerId);
+      return owner ? owner.name : 'Unknown Owner';
+    }
+);

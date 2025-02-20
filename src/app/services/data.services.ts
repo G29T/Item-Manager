@@ -94,7 +94,6 @@ export class DataService {
     return user ? user.partyId : 0;
   }
 
-
   getProposalsFromLocalStorage(){
     const storedProposals = localStorage.getItem('proposalsFromLocalStorage');
     

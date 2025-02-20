@@ -12,12 +12,13 @@ import { ProposalDialogComponent } from '../proposal-dialog/proposal-dialog.comp
 import { acceptProposal, setBackToPendingProposal, withdrawProposal } from '../../../store/proposal/proposal.actions';
 import { selectCurrentUserId, selectCurrentUserPartyId, selectUsers } from '../../../store/user/user.selectors';
 import { Owner } from '../../models/owner.model';
-import { selectOwners } from '../../../store/owner/owner.selector';
+import { selectOwnerNameById, selectOwners } from '../../../store/owner/owner.selector';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { User } from '../../models/user.model';
+
 
 @Component({
   selector: 'proposal-history',
@@ -100,14 +101,9 @@ export class ProposalHistoryComponent {
       })
     );
   }
-  
+
   getOwnerNameById(ownerId: number): Observable<string> {
-    return this.owners$.pipe(
-      map(owners => {
-        const owner = owners.find(owner => owner.id === ownerId);
-        return owner ? owner.name : 'Unknown Owner';
-      })
-    );
+    return this.store.select(selectOwnerNameById(ownerId));
   }
 
   setFilterStatus(status: 'Pending' | 'Accepted' | 'Rejected'  | 'Withdrawn' | 'FinalisedAccepted' | '' | null) {
@@ -161,6 +157,7 @@ export class ProposalHistoryComponent {
     const dialogRef = this.dialog.open(ProposalDialogComponent, {
       width: '400px',
       data: {
+        dialogTitle: 'Counterproposal',
         selectedProposal: proposal,
       },
     });
