@@ -10,11 +10,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { DataService } from './services/data.services';
-import { ProposalFormComponent } from './components/proposal-form/proposal-form.component';
+// import { ProposalFormComponent } from './components/proposal-dialog/proposal-dialog.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ProposalHistoryComponent } from './components/proposal-history/proposal-history.component';
-import { ProposalDialogComponent } from './components/proposal-dialog/proposal-dialog.component';
+import { CounterProposalDialogComponent } from './components/counterproposal-dialog/counterproposal-dialog.component';
 import { ItemsContainer } from './components/items-container/items-container.component';
+import { ProposalDialogComponent } from './components/proposal-dialog/proposal-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -33,10 +34,10 @@ import { ItemsContainer } from './components/items-container/items-container.com
     MatFormFieldModule,
     MatInputModule,
     UserSwitchComponent,
-    ItemListComponent,
-    ProposalFormComponent, 
+    ItemListComponent, 
     ProposalHistoryComponent,
     ProposalDialogComponent,
+    CounterProposalDialogComponent,
     ItemsContainer
   ],
   providers: [DataService],

@@ -1,60 +1,53 @@
-import { Component, Output, EventEmitter, Input, OnInit, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Proposal } from '../../models/proposal.model';
-import { Item } from '../../models/items.model';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { selectCurrentUserId, selectSelectedUser, selectUsers } from '../../../store/user/user.selectors';
-import { take } from 'rxjs/operators'; 
-import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { MatError, MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInput, MatInputModule } from '@angular/material/input';
-import { createProposal } from '../../../store/proposal/proposal.actions';
+import { MatButton } from '@angular/material/button';
+import { CommonModule, NgClass } from '@angular/common';
+import { selectCurrentUserId, selectSelectedUser, selectUsers } from '../../../store/user/user.selectors';
+import { Observable, take } from 'rxjs';
+import { DataService } from '../../services/data.services';
+import { Store } from '@ngrx/store';
+import { rejectProposal } from '../../../store/proposal/proposal.actions';
+import { counterProposal } from '../../../store/proposal/proposal.actions'; 
+import { FormsModule } from '@angular/forms';
 import { User } from '../../models/user.model';
 import { selectProposalState } from '../../../store/proposal/proposal.selector';
-import { UsersState } from '../../../store/user/user.reducer';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { selectOwnerNameById } from '../../../store/owner/owner.selector';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
-  selector: 'proposal-dialog',
-  templateUrl: './proposal-dialog.component.html',
-  styleUrls: ['./proposal-dialog.component.scss'],
-  imports: [MatFormField, MatLabel, FormsModule, MatInput, CommonModule, MatFormFieldModule, MatInputModule],
+  selector: 'counterproposal-dialog',
+  templateUrl: './counterproposal-dialog.component.html',
+  styleUrls: ['./counterproposal-dialog.component.scss'],
+  imports: [MatFormField, MatLabel, MatButton, CommonModule, NgClass ,FormsModule, MatFormFieldModule, MatInputModule, MatInput, MatError],
 })
-export class ProposalDialogComponent {
-  @Output() submitProposal = new EventEmitter<Proposal[]>();
-  currentUser$: Observable<User | null>
-  currentUserId$: Observable<number | null>;
-  users$: Observable<User[]>; 
-
+export class CounterProposalDialogComponent {
   comment: string = '';
   paymentRatios: { [ownerId: number]: number } = {};
   paymentRatioErrors: { [ownerId:  number]: boolean } = {}; 
   totalPaymentRatio: number = 0;
-  proposalCreationSuccess: boolean | null = null; 
-  proposalCreationError: string | null = null; 
+  currentUser$: Observable<User | null>
+  currentUserId$: Observable<number | null>;
+  users$: Observable<User[]>; 
 
   constructor(
-    public dialogRef: MatDialogRef<ProposalDialogComponent>,
-    private store:  Store<UsersState>,
+    public dialogRef: MatDialogRef<CounterProposalDialogComponent>,
+    private dataService: DataService,
+    private store: Store,
     @Inject(MAT_DIALOG_DATA) 
-    public data: { dialogTitle: string; item: Item }
+    public data: { dialogTitle: string; selectedProposal: Proposal }
   ) {    
-      if (!data.item) {
-        dialogRef.close(); // Close the dialog if there's no item
-      }
-
       this.currentUser$ = this.store.select(selectSelectedUser);
-      this.currentUserId$ = this.store.select(selectCurrentUserId);
+      this.currentUserId$ = this.store.select(selectCurrentUserId); 
       this.users$ = this.store.select(selectUsers); 
     }
 
   getOwnerNameById(ownerId: number): Observable<string> {
     return this.store.select(selectOwnerNameById(ownerId));
   }
-  
+
   calculateTotalPaymentRatio(): void {
     this.totalPaymentRatio = Object.values(this.paymentRatios).reduce((acc, val) => acc + (val || 0), 0);
     
@@ -69,12 +62,13 @@ export class ProposalDialogComponent {
     return this.paymentRatioErrors[ownerId];
   }
 
+
   hasInvalidPaymentRatio(): boolean {
-    return this.data.item.ownerIds.some(owner => this.isPaymentRatioInvalid(owner));
+    return this.data.selectedProposal.ownerIds.some(owner => this.isPaymentRatioInvalid(owner));
   }
-      
+    
   isFormValid(): boolean {
-    const allFieldsFilled = this.data.item.ownerIds.every(owner => 
+    const allFieldsFilled = this.data.selectedProposal.ownerIds.every(owner => 
       this.paymentRatios[owner] !== undefined && 
       this.paymentRatios[owner] !== null && 
       this.paymentRatios[owner].toString().trim() !== ''
@@ -83,37 +77,38 @@ export class ProposalDialogComponent {
   
     return allFieldsFilled && this.totalPaymentRatio === 100 && !this.hasInvalidPaymentRatio();
   }
-    
+  
   onNoClick(): void {
     this.dialogRef.close();
   }
-      
-  createProposal(): void {
+
+  submitCounterProposal(): void {
     if (!this.isFormValid()) {
-      return;
+      return; // Prevent submission if the form is invalid
     }
 
-    const item = this.data.item;
+    const item = this.data.selectedProposal;
+  
     this.currentUser$.pipe(take(1)).subscribe((currentUser) => {
       if (!item || !item.ownerIds || currentUser === null) return;
   
       this.users$.pipe(take(1)).subscribe(users => {
         const usersResponses: { userId: number; accept: boolean }[] = users
-          .filter(user => 
+          .filter(user =>
             item.ownerIds.includes(user.partyId) && user.id !== currentUser.id)
           .map(user => ({ userId: user.id, accept: false }));
   
         if (!currentUser) {
-          alert('You must select a user');
-          return;
+          alert('You must select a user to submit a counterproposal.');
+          return; 
         }
   
-        const proposal: Proposal = {
+        const counterProposalData: Proposal = {
           id: uuidv4(),
-          itemId: item.id,
+          itemId: item.itemId,
           userId: currentUser.id,
-          creatorInfo: currentUser,
           ownerIds: item.ownerIds,
+          creatorInfo: currentUser, 
           paymentRatios: item.ownerIds.reduce((acc, ownerId) => {
             acc[ownerId] = this.paymentRatios[ownerId] || 0;
             return acc;
@@ -121,20 +116,31 @@ export class ProposalDialogComponent {
           comment: this.comment || '',
           createdAt: new Date(),
           status: 'Pending',
-          usersResponses: usersResponses,
+          counterProposalToId: item.id,
+          usersResponses,
         };
-
-        this.store.dispatch(createProposal({ proposal }));
+  
+        this.store.dispatch(counterProposal({
+          proposalId: item.id,
+          newProposal: counterProposalData
+        }));
 
         this.store.select(selectProposalState).pipe(take(1)).subscribe(state => {
           if (state.creationSuccess) {
-            alert("Proposal created successfully!");
+            alert(`${this.data.dialogTitle} created successfully!`);
           }
           if (state.creationError) {
             alert(`Error: ${state.creationError}`);
           }
         });
+
+        this.store.dispatch(rejectProposal({ proposalId: item.id }));
+
+        this.dialogRef.close(counterProposalData);
       });
     });
   }
-}  
+}
+
+
+    

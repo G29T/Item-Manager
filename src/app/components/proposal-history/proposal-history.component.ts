@@ -8,7 +8,7 @@ import { selectProposalsForItem } from '../../../store/proposal/proposal.selecto
 import { selectSelectedItem } from '../../../store/item/item.selectors';
 import { Item } from '../../models/items.model';
 import { MatDialog } from '@angular/material/dialog';
-import { ProposalDialogComponent } from '../proposal-dialog/proposal-dialog.component';
+import { CounterProposalDialogComponent } from '../counterproposal-dialog/counterproposal-dialog.component';
 import { acceptProposal, setBackToPendingProposal, withdrawProposal } from '../../../store/proposal/proposal.actions';
 import { selectCurrentUserId, selectCurrentUserPartyId, selectUsers } from '../../../store/user/user.selectors';
 import { Owner } from '../../models/owner.model';
@@ -154,7 +154,7 @@ export class ProposalHistoryComponent {
   }
 
   openCounterProposalDialog(proposal: Proposal): void {
-    const dialogRef = this.dialog.open(ProposalDialogComponent, {
+    const dialogRef = this.dialog.open(CounterProposalDialogComponent, {
       width: '400px',
       data: {
         dialogTitle: 'Counterproposal',
@@ -164,7 +164,7 @@ export class ProposalHistoryComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Counter proposal submitted:', result);
+        console.log('Counterproposal submitted:', result);
       }
     });
   }

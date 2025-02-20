@@ -5,6 +5,9 @@ import { MatListModule } from '@angular/material/list';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { Proposal } from '../../models/proposal.model';
+import { ProposalDialogComponent } from '../proposal-dialog/proposal-dialog.component';
 
 @Component({
   selector: 'item-list',
@@ -20,8 +23,26 @@ export class ItemListComponent {
 
   selectedItemId: number | null = null; 
 
+  constructor(private dialog: MatDialog) {}
+
   onSelectItem(item: Item) {
     this.selectedItemId = item.id; 
     this.itemSelected.emit(item);
+  }
+
+  openProposalDialog(item: Item): void {
+    const dialogRef = this.dialog.open(ProposalDialogComponent, {
+        width: '400px',
+        data: {
+            dialogTitle: 'Proposal',
+            item: item,
+        },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+            console.log('Proposal submitted:', result);
+        }
+    });
   }
 }

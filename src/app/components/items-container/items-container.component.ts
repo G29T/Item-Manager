@@ -5,16 +5,10 @@ import { Item } from '../../models/items.model';
 import { selectItem } from '../../../store/item/item.actions';
 import { selectItemsByUser, selectSelectedItem } from '../../../store/item/item.selectors';
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { MatListModule } from '@angular/material/list';
 import { ItemsState } from '../../../store/item/item.reducer';
-import { ProposalFormComponent } from '../proposal-form/proposal-form.component';
 import { ProposalHistoryComponent } from '../proposal-history/proposal-history.component';
-import { selectProposalsForItem } from '../../../store/proposal/proposal.selector';
 import { selectCurrentUserId, selectUsers } from '../../../store/user/user.selectors';
 import { User } from '../../models/user.model';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatOptionModule } from '@angular/material/core';
-import { MatSelectModule } from '@angular/material/select';
 import { SortSelectorComponent } from '../sort-selector/sort-selector.component';
 import { ItemListComponent } from '../item-list/item-list.component';
 import { ItemUtilsService } from '../../services/item-utils.service';
@@ -23,7 +17,7 @@ import { ItemUtilsService } from '../../services/item-utils.service';
   selector: 'items-container',
   templateUrl: './items-container.component.html',
   styleUrls: ['./items-container.component.scss'],
-  imports: [SortSelectorComponent, ItemListComponent, ProposalFormComponent, ProposalHistoryComponent, CommonModule, AsyncPipe],
+  imports: [SortSelectorComponent, ItemListComponent, ProposalHistoryComponent, CommonModule, AsyncPipe],
 })
 export class ItemsContainer {
     userItems$: Observable<Item[]>;
@@ -82,4 +76,5 @@ export class ItemsContainer {
     hasPendingProposals(itemId: number): Observable<boolean> {
         return this.itemUtils.hasPendingProposals(itemId);
     }
+    
 }

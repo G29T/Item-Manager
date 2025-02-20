@@ -2,16 +2,9 @@ h2[mat-dialog-title] {
     font-size: 1.5rem;
     font-weight: 600; 
     color: #3f51b5;
-    text-align: center; 
-  }
-  
-  h3[mat-dialog-title] {
-    font-size: 1.2rem;
-    font-weight: 500; 
-    color: #36469d;
     margin-bottom: 10px; 
     text-align: center; 
-  }
+}
 
 .custom-dialog-content {
     display: flex; 
@@ -22,7 +15,17 @@ h2[mat-dialog-title] {
     max-width: 100%;
     min-width: 300px;
     margin: 0 auto; 
-  
+
+    .title {
+        width: 100%;
+        display: flex;              
+        flex-direction: column;     
+        align-items: center;       
+        justify-content: center;     
+        text-align: center;      
+        margin: 20px 0;      
+    }
+    
     mat-form-field.full-width {
         width: 100%; 
         margin-bottom: 5px; 
@@ -36,7 +39,7 @@ h2[mat-dialog-title] {
         color: red; 
     }
 }
-  
+
 .custom-dialog-actions {
     display: flex; 
     justify-content: center; 
@@ -52,21 +55,6 @@ h2[mat-dialog-title] {
 
 button[mat-button] {
     font-size: 1rem;
-    color: #3f51b5;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    margin: 0 8px;
-    margin-bottom: 15px;
-    padding: 8px 16px;
-    font-weight: 500;
-
-    &:hover {
-        background-color: rgba(63, 81, 181, 0.1);
-    }
-}
-
-button[mat-button] {
-    font-size: 1rem;
     color: white;
     background-color: #3f51b5; 
     border-radius: 5px;
@@ -75,22 +63,21 @@ button[mat-button] {
     margin-bottom: 15px;
     padding: 8px 16px;
     font-weight: 500;
-    border: none;
-  
+
     &:hover {
         background-color: #303f9f; 
     }
-  
+
     &:active {
         background-color: #1a237e; 
     }
-  
+
     &:focus {
         outline: none;
         box-shadow: 0 0 4px rgba(63, 81, 181, 0.5);
     }
 }
-  
+
 button[type='submit'] {
     background-color: #3f51b5;
     color: white;
