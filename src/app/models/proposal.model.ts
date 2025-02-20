@@ -9,7 +9,7 @@ export interface Proposal {
   paymentRatios: { [key: number]: number };
   comment: string;
   createdAt: Date;
-  status: 'Pending' | 'Accepted' | 'Rejected'  | 'Withdrawn' | 'Finalised - Accepted';
+  status: 'Pending' | 'Accepted' | 'Rejected'  | 'Withdrawn' | 'Finalised';
   counterProposalToId?: string;
   usersResponses: { userId: number; accept: boolean }[];
 }

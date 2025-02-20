@@ -1,0 +1,11 @@
+<mat-form-field>
+    <mat-label>Filter By Status:</mat-label>
+    <mat-select (selectionChange)="onFilterChange($event.value)">
+        <mat-option value="">All</mat-option>
+        <mat-option value="Pending">Pending</mat-option>
+        <mat-option value="Accepted">Accepted</mat-option>
+        <mat-option value="Rejected">Rejected</mat-option>
+        <mat-option value="Withdrawn">Withdrawn</mat-option>
+        <mat-option value="Finalised">Finalised</mat-option>
+    </mat-select>
+</mat-form-field>

@@ -21,6 +21,7 @@ import { User } from '../../models/user.model';
 import { MatIcon } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatCard, MatCardModule } from '@angular/material/card';
+import { FilterProposalsComponent } from '../filter-proposals/filter-proposals.component';
 
 
 @Component({
@@ -28,7 +29,7 @@ import { MatCard, MatCardModule } from '@angular/material/card';
   templateUrl: './proposal-history.component.html',
   styleUrls: ['./proposal-history.component.scss'],
   imports: [AsyncPipe, CommonModule, FormsModule, NgIf, MatFormField, 
-    MatLabel, MatOptionModule, MatSelectModule, MatListModule, MatCardModule, MatIcon],
+    MatLabel, MatOptionModule, MatSelectModule, MatListModule, MatCardModule, MatIcon, FilterProposalsComponent],
 })
 export class ProposalHistoryComponent {
   selectedItem$: Observable<Item | null>;
@@ -38,7 +39,7 @@ export class ProposalHistoryComponent {
   currentUserPartyId$: Observable<number>;
   private sortedProposals: Proposal[] = []; 
   sortingCriterion: 'dateAsc' | 'dateDsc' = 'dateDsc';
-  private filterStatusSubject = new BehaviorSubject<'Pending' | 'Accepted' | 'Rejected'  | 'Withdrawn' | 'FinalisedAccepted' | '' | null>(null);
+  private filterStatusSubject = new BehaviorSubject<'Pending' | 'Accepted' | 'Rejected'  | 'Withdrawn' | 'Finalised' | '' | null>(null);
   filterStatus$ = this.filterStatusSubject.asObservable();
 
   constructor(private store: Store, private dialog: MatDialog) {
@@ -70,7 +71,7 @@ export class ProposalHistoryComponent {
     );
   }
 
-  get filterStatusValue(): 'Pending' | 'Accepted' | 'Rejected' | 'Withdrawn' | 'FinalisedAccepted' | '' | null {
+  get filterStatusValue(): 'Pending' | 'Accepted' | 'Rejected' | 'Withdrawn' | 'Finalised' | '' | null {
     return this.filterStatusSubject.value;
   }
 
@@ -110,10 +111,27 @@ export class ProposalHistoryComponent {
     return this.store.select(selectOwnerNameById(ownerId));
   }
 
-  setFilterStatus(status: 'Pending' | 'Accepted' | 'Rejected'  | 'Withdrawn' | 'FinalisedAccepted' | '' | null) {
+  setFilterStatus(status: 'Pending' | 'Accepted' | 'Rejected'  | 'Withdrawn' | 'Finalised' | '' | null) {
     this.filterStatusSubject.next(status);
     this.updateFilteredProposals();
   }
+
+//   setFilterStatus(status: '' | 'Pending' | 'Accepted' | 'Rejected' | 'Withdrawn' | 'Finalised' | null) {
+//     if (status === null || 
+//         status === '' || 
+//         status === 'Pending' || 
+//         status === 'Accepted' || 
+//         status === 'Rejected' || 
+//         status === 'Withdrawn' || 
+//         status === 'Finalised') {
+        
+//         this.filterStatusSubject.next(status);
+//         this.updateFilteredProposals();
+//     } else {
+//         console.error('Invalid status value:', status);
+//     }
+// }
+
 
   private updateFilteredProposals() {
     this.proposalsByItem$ = this.proposalsByItem$.pipe(

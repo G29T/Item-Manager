@@ -6,7 +6,7 @@
   </mat-select>
 </mat-form-field>
 
-<mat-form-field>
+<!-- <mat-form-field>
   <mat-label>Filter By Status:</mat-label>
   <mat-select (selectionChange)="setFilterStatus($event.value)" [value]="filterStatusValue">
     <mat-option value="">All</mat-option>
@@ -14,9 +14,11 @@
     <mat-option value="Accepted">Accepted</mat-option>
     <mat-option value="Rejected">Rejected</mat-option>
     <mat-option value="Withdrawn">Withdrawn</mat-option>
-    <mat-option value="FinalisedAccepted">Finalised - Accepted</mat-option>
+    <mat-option value="Finalised">Finalised</mat-option>
   </mat-select>
-</mat-form-field>
+</mat-form-field> -->
+
+<filter-proposals (filterChange)="setFilterStatus($event)"></filter-proposals>
 
 <div *ngIf="(proposalsByItem$ | async) as proposals">
   <mat-list *ngIf="proposals?.length; else noProposalsTemplate">
@@ -26,14 +28,14 @@
           <div class="proposal-header">
             <div class="status">
               <span [ngClass]="{ 
-                    accepted: proposal.status === 'Accepted' || proposal.status === 'Finalised - Accepted', 
+                    accepted: proposal.status === 'Accepted' || proposal.status === 'Finalised', 
                     rejected: proposal.status === 'Rejected', 
                     pending: proposal.status === 'Pending', 
                     withdrawn: proposal.status === 'Withdrawn' 
                   }">
                 {{ proposal.status }}
                 <mat-icon *ngIf="proposal.status === 'Pending'">hourglass_empty</mat-icon>
-                <mat-icon *ngIf="proposal.status === 'Accepted' || proposal.status === 'Finalised - Accepted'">check_circle</mat-icon>
+                <mat-icon *ngIf="proposal.status === 'Accepted' || proposal.status === 'Finalised'">check_circle</mat-icon>
                 <mat-icon *ngIf="proposal.status === 'Rejected'">cancel</mat-icon>
                 <mat-icon *ngIf="proposal.status === 'Withdrawn'">remove_circle</mat-icon>
               </span>
@@ -69,13 +71,13 @@
         </mat-card-content>
         <mat-card-actions class="proposal-actions">
           <div class="buttons-container">
-            <button mat-button class="withdraw" *ngIf="proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised - Accepted' && proposal.status !== 'Rejected' && (currentUserId$ | async) === proposal.userId" (click)="withdrawProposal(proposal)">
+            <button mat-button class="withdraw" *ngIf="proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised' && proposal.status !== 'Rejected' && (currentUserId$ | async) === proposal.userId" (click)="withdrawProposal(proposal)">
               Withdraw
             </button>
-            <button mat-button class="accept" *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised - Accepted' && (currentUserId$ | async) !== proposal.userId" (click)="acceptProposal(proposal)">
+            <button mat-button class="accept" *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised' && (currentUserId$ | async) !== proposal.userId" (click)="acceptProposal(proposal)">
               Accept
             </button>
-            <button mat-button class="reject" *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised - Accepted' && (currentUserId$ | async) !== proposal.userId" (click)="openCounterProposalDialog(proposal)">
+            <button mat-button class="reject" *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised' && (currentUserId$ | async) !== proposal.userId" (click)="openCounterProposalDialog(proposal)">
               Reject
             </button>
           </div>
