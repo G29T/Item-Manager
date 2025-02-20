@@ -1,11 +1,13 @@
-
-<sort-proposals (sortChange)="setSortingCriterion($event)"></sort-proposals>
-<filter-proposals (filterChange)="setFilterStatus($event)"></filter-proposals>
-
-<div *ngIf="(proposalsByItem$ | async) as proposals">
-  <proposal-list 
-    [proposals]="proposals" 
-    [getAcceptedPartyMembers]="getAcceptedPartyMembers.bind(this)" 
-    [getOwnerNameById]="getOwnerNameById.bind(this)">
-  </proposal-list>
+<div class="container">
+  <div class="controls">
+    <sort-proposals (sortChange)="setSortingCriterion($event)"></sort-proposals>
+    <filter-proposals (filterChange)="setFilterStatus($event)"></filter-proposals>
+  </div>
+  <div class="proposal-list-container" *ngIf="(proposalsByItem$ | async) as proposals">
+    <proposal-list 
+      [proposals]="proposals" 
+      [getAcceptedPartyMembers]="getAcceptedPartyMembers.bind(this)" 
+      [getOwnerNameById]="getOwnerNameById.bind(this)">
+    </proposal-list>  
+  </div>
 </div>
