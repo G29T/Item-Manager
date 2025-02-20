@@ -1,79 +1,77 @@
-<!-- <div *ngIf="(proposalsByItem$ | async) as proposals"> -->
-    <mat-list *ngIf="proposals?.length; else noProposalsTemplate">
-      <mat-list-item *ngFor="let proposal of proposals">
-        <mat-card class="proposal-card">
-          <mat-card-content>
-            <div class="proposal-header">
-              <div class="status">
-                <span [ngClass]="{ 
-                      accepted: proposal.status === 'Accepted' || proposal.status === 'Finalised', 
-                      rejected: proposal.status === 'Rejected', 
-                      pending: proposal.status === 'Pending', 
-                      withdrawn: proposal.status === 'Withdrawn' 
-                    }">
-                  {{ proposal.status }}
-                  <mat-icon *ngIf="proposal.status === 'Pending'">hourglass_empty</mat-icon>
-                  <mat-icon *ngIf="proposal.status === 'Accepted' || proposal.status === 'Finalised'">check_circle</mat-icon>
-                  <mat-icon *ngIf="proposal.status === 'Rejected'">cancel</mat-icon>
-                  <mat-icon *ngIf="proposal.status === 'Withdrawn'">remove_circle</mat-icon>
+<mat-list *ngIf="proposals?.length; else noProposalsTemplate">
+    <mat-list-item *ngFor="let proposal of proposals">
+    <mat-card class="proposal-card">
+        <mat-card-content>
+        <div class="proposal-header">
+            <div class="status">
+            <span [ngClass]="{ 
+                    accepted: proposal.status === 'Accepted' || proposal.status === 'Finalised', 
+                    rejected: proposal.status === 'Rejected', 
+                    pending: proposal.status === 'Pending', 
+                    withdrawn: proposal.status === 'Withdrawn' 
+                }">
+                {{ proposal.status }}
+                <mat-icon *ngIf="proposal.status === 'Pending'">hourglass_empty</mat-icon>
+                <mat-icon *ngIf="proposal.status === 'Accepted' || proposal.status === 'Finalised'">check_circle</mat-icon>
+                <mat-icon *ngIf="proposal.status === 'Rejected'">cancel</mat-icon>
+                <mat-icon *ngIf="proposal.status === 'Withdrawn'">remove_circle</mat-icon>
+            </span>
+            </div>
+            <div>
+            Proposal ID: <strong>{{ proposal.id }}</strong>
+            </div>
+            <div *ngIf="proposal.counterProposalToId">
+            Counterproposal To ID: <strong>{{ proposal.counterProposalToId }}</strong>
+            </div>
+        </div>
+        <div class="proposal-comment">
+            <span>Comment: {{ proposal.comment }}</span>
+        </div>
+        <div class="proposal-info">
+            <div class="payment-ratios">
+            <div *ngFor="let ownerId of proposal.ownerIds">
+                <ng-container *ngIf="getOwnerNameById(ownerId) | async as ownerName">
+                <span>{{ ownerName }} - Payment Ratio: {{ proposal.paymentRatios[ownerId] }}</span>
+                </ng-container>
+            </div>
+            </div>
+            <div class="accepted-users" *ngIf="(getAcceptedPartyMembers(proposal) | async) as acceptedUsers">
+            <ng-container *ngIf="acceptedUsers.length > 0">
+                <span>Accepted by: 
+                <span *ngFor="let user of acceptedUsers; let isLast = last">
+                    {{ user.name }}<span *ngIf="!isLast">, </span>
                 </span>
-              </div>
-              <div>
-                Proposal ID: <strong>{{ proposal.id }}</strong>
-              </div>
-              <div *ngIf="proposal.counterProposalToId">
-                Counterproposal To ID: <strong>{{ proposal.counterProposalToId }}</strong>
-              </div>
+                </span>
+            </ng-container>
             </div>
-            <div class="proposal-comment">
-              <span>Comment: {{ proposal.comment }}</span>
-            </div>
-            <div class="proposal-info">
-              <div class="payment-ratios">
-                <div *ngFor="let ownerId of proposal.ownerIds">
-                  <ng-container *ngIf="getOwnerNameById(ownerId) | async as ownerName">
-                    <span>{{ ownerName }} - Payment Ratio: {{ proposal.paymentRatios[ownerId] }}</span>
-                  </ng-container>
-                </div>
-              </div>
-              <div class="accepted-users" *ngIf="(getAcceptedPartyMembers(proposal) | async) as acceptedUsers">
-                <ng-container *ngIf="acceptedUsers.length > 0">
-                  <span>Accepted by: 
-                    <span *ngFor="let user of acceptedUsers; let isLast = last">
-                      {{ user.name }}<span *ngIf="!isLast">, </span>
-                    </span>
-                  </span>
-                </ng-container>
-              </div>
-            </div>
-          </mat-card-content>
-          <mat-card-actions class="proposal-actions">
-            <div class="buttons-container">
-              <button mat-button class="withdraw" *ngIf="proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised' && proposal.status !== 'Rejected' && (currentUserId$ | async) === proposal.userId" (click)="withdrawProposal(proposal)">
-                Withdraw
-              </button>
-              <button mat-button class="accept" *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised' && (currentUserId$ | async) !== proposal.userId" (click)="acceptProposal(proposal)">
-                Accept
-              </button>
-              <button mat-button class="reject" *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised' && (currentUserId$ | async) !== proposal.userId" (click)="openCounterProposalDialog(proposal)">
-                Reject
-              </button>
-            </div>
-            <div class="proposal-meta">
-              <ng-container *ngIf="(currentUserId$ | async) as currentUserId">
-                <ng-container *ngIf="proposal.creatorInfo">
-                  <span class="created-by" *ngIf="currentUserId === proposal.creatorInfo.partyId">
-                    Created by: <strong>{{ proposal.creatorInfo.name }}</strong>
-                  </span>
-                </ng-container>
-              </ng-container>
-              <strong class="proposal-date">{{ proposal.createdAt | date }}</strong>
-            </div>
-          </mat-card-actions>
-        </mat-card>
-      </mat-list-item>
-    </mat-list>
-    <ng-template #noProposalsTemplate>
-      <p>No proposals available for this item.</p>
-    </ng-template>
-  <!-- </div> -->
+        </div>
+        </mat-card-content>
+        <mat-card-actions class="proposal-actions">
+        <div class="buttons-container">
+            <button mat-button class="withdraw" *ngIf="proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised' && proposal.status !== 'Rejected' && (currentUserId$ | async) === proposal.userId" (click)="withdrawProposal(proposal)">
+            Withdraw
+            </button>
+            <button mat-button class="accept" *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised' && (currentUserId$ | async) !== proposal.userId" (click)="acceptProposal(proposal)">
+            Accept
+            </button>
+            <button mat-button class="reject" *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised' && (currentUserId$ | async) !== proposal.userId" (click)="openCounterProposalDialog(proposal)">
+            Reject
+            </button>
+        </div>
+        <div class="proposal-meta">
+            <ng-container *ngIf="(currentUserId$ | async) as currentUserId">
+            <ng-container *ngIf="proposal.creatorInfo">
+                <span class="created-by" *ngIf="currentUserId === proposal.creatorInfo.partyId">
+                Created by: <strong>{{ proposal.creatorInfo.name }}</strong>
+                </span>
+            </ng-container>
+            </ng-container>
+            <strong class="proposal-date">{{ proposal.createdAt | date }}</strong>
+        </div>
+        </mat-card-actions>
+    </mat-card>
+    </mat-list-item>
+</mat-list>
+<ng-template #noProposalsTemplate>
+    <p>No proposals available</p>
+</ng-template>
