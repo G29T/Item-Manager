@@ -42,6 +42,8 @@ export class ItemUtilsService {
             return [...items].sort((a, b) => b.name.localeCompare(a.name));
         case 'costAsc':
             return [...items].sort((a, b) => a.totalCost - b.totalCost);
+        case 'costDsc':
+            return [...items].sort((a, b) => b.totalCost - a.totalCost);
         case 'pendingStatus':
             return [...items].sort((a, b) => (b.hasPending ? 1 : 0) - (a.hasPending ? 1 : 0));
         default:
