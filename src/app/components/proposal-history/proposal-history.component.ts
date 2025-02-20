@@ -22,6 +22,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatCard, MatCardModule } from '@angular/material/card';
 import { FilterProposalsComponent } from '../filter-proposals/filter-proposals.component';
+import { SortProposalsComponent } from '../sort-proposals/sort-proposals.component';
 
 
 @Component({
@@ -29,7 +30,9 @@ import { FilterProposalsComponent } from '../filter-proposals/filter-proposals.c
   templateUrl: './proposal-history.component.html',
   styleUrls: ['./proposal-history.component.scss'],
   imports: [AsyncPipe, CommonModule, FormsModule, NgIf, MatFormField, 
-    MatLabel, MatOptionModule, MatSelectModule, MatListModule, MatCardModule, MatIcon, FilterProposalsComponent],
+    MatLabel, MatOptionModule, MatSelectModule, MatListModule, MatCardModule, MatIcon, FilterProposalsComponent,
+  SortProposalsComponent
+  ],
 })
 export class ProposalHistoryComponent {
   selectedItem$: Observable<Item | null>;
@@ -115,23 +118,6 @@ export class ProposalHistoryComponent {
     this.filterStatusSubject.next(status);
     this.updateFilteredProposals();
   }
-
-//   setFilterStatus(status: '' | 'Pending' | 'Accepted' | 'Rejected' | 'Withdrawn' | 'Finalised' | null) {
-//     if (status === null || 
-//         status === '' || 
-//         status === 'Pending' || 
-//         status === 'Accepted' || 
-//         status === 'Rejected' || 
-//         status === 'Withdrawn' || 
-//         status === 'Finalised') {
-        
-//         this.filterStatusSubject.next(status);
-//         this.updateFilteredProposals();
-//     } else {
-//         console.error('Invalid status value:', status);
-//     }
-// }
-
 
   private updateFilteredProposals() {
     this.proposalsByItem$ = this.proposalsByItem$.pipe(

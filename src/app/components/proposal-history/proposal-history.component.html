@@ -1,23 +1,5 @@
-<mat-form-field>
-  <mat-label>Sort By</mat-label>
-  <mat-select (selectionChange)="setSortingCriterion($event.value)" [value]="sortingCriterion">
-    <mat-option value="dateAsc">Date Asc</mat-option>
-    <mat-option value="dateDsc">Date Dsc</mat-option>
-  </mat-select>
-</mat-form-field>
 
-<!-- <mat-form-field>
-  <mat-label>Filter By Status:</mat-label>
-  <mat-select (selectionChange)="setFilterStatus($event.value)" [value]="filterStatusValue">
-    <mat-option value="">All</mat-option>
-    <mat-option value="Pending">Pending</mat-option>
-    <mat-option value="Accepted">Accepted</mat-option>
-    <mat-option value="Rejected">Rejected</mat-option>
-    <mat-option value="Withdrawn">Withdrawn</mat-option>
-    <mat-option value="Finalised">Finalised</mat-option>
-  </mat-select>
-</mat-form-field> -->
-
+<sort-proposals (sortChange)="setSortingCriterion($event)"></sort-proposals>
 <filter-proposals (filterChange)="setFilterStatus($event)"></filter-proposals>
 
 <div *ngIf="(proposalsByItem$ | async) as proposals">
