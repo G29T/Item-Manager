@@ -128,6 +128,7 @@ export class CounterProposalDialogComponent {
         this.store.select(selectProposalState).pipe(take(1)).subscribe(state => {
           if (state.creationSuccess) {
             alert(`${this.data.dialogTitle} created successfully!`);
+            this.dialogRef.close();
           }
           if (state.creationError) {
             alert(`Error: ${state.creationError}`);

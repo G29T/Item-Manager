@@ -128,7 +128,8 @@ export class ProposalDialogComponent {
 
         this.store.select(selectProposalState).pipe(take(1)).subscribe(state => {
           if (state.creationSuccess) {
-            alert("Proposal created successfully!");
+            alert(`${this.data.dialogTitle} created successfully!`);
+            this.dialogRef.close();
           }
           if (state.creationError) {
             alert(`Error: ${state.creationError}`);
