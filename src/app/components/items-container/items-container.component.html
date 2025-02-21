@@ -2,6 +2,6 @@
     <sort-items (sortChange)="setSortingCriterion($event)"></sort-items>
     <item-list 
         [items]="(userItems$ | async) || []"
-        [hasPendingProposals]="hasPendingProposals.bind(this)">
+        [hasPendingProposals]="hasPendingProposals.bind(this)" (click)="onItemClick()">
     </item-list>
 </div>

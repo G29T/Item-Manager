@@ -7,7 +7,7 @@ import { selectProposalsForItem } from '../../../store/proposal/proposal.selecto
 import { selectSelectedItem } from '../../../store/item/item.selectors';
 import { Item } from '../../models/items.model';
 import { MatDialog } from '@angular/material/dialog';
-import { selectCurrentUserId, selectCurrentUserPartyId, selectUsers } from '../../../store/user/user.selectors';
+import { selectCurrentUserId, selectCurrentUserPartyId, selectSelectedUser, selectUsers } from '../../../store/user/user.selectors';
 import { Owner } from '../../models/owner.model';
 import { selectOwnerNameById, selectOwners } from '../../../store/owner/owner.selector';
 import { FormsModule } from '@angular/forms';
@@ -42,7 +42,6 @@ export class HistoryContainerComponent {
   sortingCriterion: 'dateAsc' | 'dateDsc' = 'dateDsc';
   private filterStatusSubject = new BehaviorSubject<'Pending' | 'Accepted' | 'Rejected'  | 'Withdrawn' | 'Finalised' | '' | null>(null);
   filterStatus$ = this.filterStatusSubject.asObservable();
-  isItemSelected: boolean = false;
 
   constructor(private store: Store, private dialog: MatDialog) {
     this.currentUserId$ = this.store.select(selectCurrentUserId);
@@ -71,11 +70,6 @@ export class HistoryContainerComponent {
         );
       })
     );
-  }
-
-  async checkIfItemWasSelected() {
-    const currentItem = await firstValueFrom(this.selectedItem$);
-    this.isItemSelected = currentItem !== null;
   }
 
   get filterStatusValue(): 'Pending' | 'Accepted' | 'Rejected' | 'Withdrawn' | 'Finalised' | '' | null {

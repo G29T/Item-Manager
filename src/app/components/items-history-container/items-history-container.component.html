@@ -5,7 +5,7 @@
       <mat-icon>list</mat-icon> Items List
     </button>
 
-    <items-container *ngIf="isItemsVisible" (click)="onItemsContainerClick()"></items-container>
+    <items-container *ngIf="isItemsVisible" (itemClicked)="isItemsVisible = false"></items-container>
     <history-container *ngIf="!isItemsVisible"></history-container>
   </ng-container>
 

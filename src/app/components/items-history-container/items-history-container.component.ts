@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { HistoryContainerComponent } from '../proposal-history/history-container.component';
 import { ItemsContainerComponent } from '../items-container/items-container.component';
 import { NgIf } from '@angular/common';
@@ -12,6 +12,8 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class ItemsHistoryConatinerComponent {
 
+  @ViewChild('itemsContainer', { static: false }) itemsContainer!: ElementRef;
+  
   constructor(private eRef: ElementRef) {}
   
     isItemsVisible: boolean = false;
@@ -20,15 +22,16 @@ export class ItemsHistoryConatinerComponent {
     toggleItemsContainer() {
       this.isItemsVisible = !this.isItemsVisible;
     }
-  
-    onItemsContainerClick() {
-      this.isItemsVisible = false; 
-    }
 
     @HostListener('document:click', ['$event'])
-    handleClickOutside(event: Event) {
-      if (this.isSmallScreen && this.isItemsVisible && !this.eRef.nativeElement.contains(event.target)) {
-        this.isItemsVisible = false;
+    handleClickOutside(event: MouseEvent) {
+      const target = event.target as HTMLElement;
+
+      if (this.isSmallScreen && this.isItemsVisible && this.itemsContainer) {
+        const itemsContainerElement = this.itemsContainer.nativeElement;
+        if (!itemsContainerElement.contains(target)) {
+          this.isItemsVisible = false; 
+        }
       }
     }
   

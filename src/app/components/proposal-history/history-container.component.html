@@ -1,6 +1,7 @@
 <div class="history-container">
-  <h4 *ngIf="!isItemSelected">You must select an item!</h4>
-  <div class="controls" *ngIf="isItemSelected">
+  <h3>Proposals History</h3>
+  <span>Don't forget to select an item! Some items might not have a history.</span>
+  <div class="controls">
     <sort-proposals (sortChange)="setSortingCriterion($event)"></sort-proposals>
     <filter-proposals (filterChange)="setFilterStatus($event)"></filter-proposals>
   </div>

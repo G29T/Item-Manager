@@ -1,10 +1,9 @@
-import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { Item } from '../../models/items.model';
 import { firstValueFrom, Observable, take } from 'rxjs';
 import { MatListModule } from '@angular/material/list';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
-import { MatIconButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { ProposalDialogComponent } from '../proposal-dialog/proposal-dialog.component';
 import { Store } from '@ngrx/store';
@@ -17,7 +16,7 @@ import { selectSelectedUser } from '../../../store/user/user.selectors';
   selector: 'item-list',
   templateUrl: './item-list.component.html',
   styleUrls: ['./item-list.component.scss'],
-  imports: [MatListModule, CommonModule, AsyncPipe, MatIconModule, MatIconButton],
+  imports: [MatListModule, CommonModule, AsyncPipe, MatIconModule],
   encapsulation: ViewEncapsulation.None, 
 })
 export class ItemListComponent {

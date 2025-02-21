@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { Item } from '../../models/items.model';
@@ -22,6 +22,7 @@ export class ItemsContainerComponent {
     currentUserId$: Observable<number | null>;
     users$: Observable<User[]>;
     sortingCriterion: 'nameAsc' | 'nameDsc' | 'costAsc' | 'costDsc' | 'pendingStatus' = 'nameAsc';
+    @Output() itemClicked = new EventEmitter<void>();
 
     constructor(private store: Store, private itemUtils: ItemUtilsService) {
         this.currentUserId$ = this.store.select(selectCurrentUserId);
@@ -33,6 +34,9 @@ export class ItemsContainerComponent {
         this.users$ = this.store.select(selectUsers); 
     }
   
+    onItemClick() {
+        this.itemClicked.emit();
+    }
 
     setSortingCriterion(criterion: string) {
         this.sortingCriterion = criterion as 'nameAsc' | 'nameDsc' | 'costAsc' | 'costDsc' | 'pendingStatus';;
