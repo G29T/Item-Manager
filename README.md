@@ -16,7 +16,7 @@ This README covers topics such as Key Features, LocalStorage, Responsive Design 
 
 - npm install -g @angular/cli
 
--- Open your package.json file and ensure that the scripts section includes the following entries:
+Open your package.json file and ensure that the scripts section includes the following entries:
 "scripts": {
 "ng": "ng",
 "start": "ng serve",
