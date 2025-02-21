@@ -25,8 +25,12 @@ history-container {
         width: 100%; 
     }
   
+    items-container {
+        margin-bottom: 16px;     
+    }
+
     items-container, history-container {
-        margin: 0; 
+        // margin: 0; 
         width: 100%; 
     }
 }
