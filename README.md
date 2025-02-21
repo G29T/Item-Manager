@@ -1,3 +1,149 @@
+# Description
+
+This Angular-based application is designed to help users manage items within their party or company. Each item can be linked to a single party or shared among multiple parties, with users always associated with one specific party or company.
+
+This README covers topics such as Key Features, LocalStorage, Icons Explanations, Proposal Lifecycle, Filtering and Sorting Proposals, and Future Work.
+
+## Technologies Used
+
+- Angular
+- NgRx
+- RxJS
+- TypeScript
+- Angular Material
+
+## Set up
+
+- npm install -g @angular/cli
+
+-- Open your package.json file and ensure that the scripts section includes the following entries:
+"scripts": {
+"ng": "ng",
+"start": "ng serve",
+"build": "ng build",
+"watch": "ng build --watch --configuration development",
+"test": "ng test"
+}
+
+- ng serve to start the application
+
+## User Selector
+
+Users can easily switch between different users within the application. When a user is selected from the dropdown, the associated items, proposals, and all relevant data are dynamically updated and displayed.
+
+## NgRx Implementation
+
+This project utilizes NgRx for state management, which provides a structured way to manage application state.
+NgRx for state management, provides a scalable and maintainable architecture.
+
+There are actions, reducers, effects, selectors form item, owner, proposal and user.
+
+### Actions
+
+Actions: Defined using createAction, actions are dispatched to notify the application about state changes.
+Actions are defined to manage item-related events. Some of the key actions include:
+
+- loadItems: Initiates loading items.
+- loadItemsSuccess: Dispatched when items are successfully loaded.
+- loadItemsFailure: Dispatched when there is an error loading items.
+- loadItemsByUser: Initiates loading items for a specific user.
+- selectItem: Sets the currently selected item.
+
+### Reducers
+
+Reducers: Defined using createReducer, reducers handle state transitions based on the dispatched actions
+Reducers are used to specify how the state changes in response to actions. The itemReducer manages the state of items and the selected item.
+
+### Selectors
+
+Selectors: Defined using createSelector, selectors are used to retrieve specific slices of the state, enabling efficient state access.
+Selectors are used to obtain slices of the state. The selectAllItems selector fetches all items from the state.
+
+### Effects
+
+Effects: Implemented using createEffect, effects handle side effects in response to actions. They interact with services to fetch or manipulate data.
+Effects handle side effects such as API calls. The ItemEffects class manages the loading of items and handling success or failure.
+
+## LocalStorage
+
+### JSON files
+
+The loadInitialData method is designed to prefill the application’s local storage with necessary data using provided JSON files
+
+### Persistence of Proposals
+
+In addition to the initial data loading, it's important to note that the proposals created and modified within the application are also stored in local storage.
+
+## Icons
+
+-Icon: local_offer
+Meaning: Represents the action of making a proposal. When clicked, it triggers the openProposalDialog(item) method, which opens a dialog box containing the form necessary for creating a new proposal.
+
+- Icon: group
+  Meaning: Indicates that the item is shared with other users.
+
+- Icon: hourglass_empty
+  Meaning: Indicates that the proposal is still pending.
+
+- Icon: check_circle
+  Meaning: Represents that the proposal has been accepted or finalised.
+
+- Icon: cancel
+  Meaning: Indicates that the proposal has been rejected.
+
+- Icon: remove_circle
+  Meaning: Represents that the proposal has been withdrawn.
+
+- Icon: hourglass_empty
+  Meaning: This icon appears if there are pending proposals associated with the current item.
+
+## Proposal Lifecycle
+
+### Creating a Proposal:
+
+When a user makes a proposal, it is submitted for review by all owners from the involved parties. This proposal must be accepted by all relevant stakeholders to move forward.
+
+### Withdrawal of Proposal:
+
+If the proposal has not been accepted by all parties, the user has the option to withdraw the proposal.
+Impact of Withdrawal: Once a proposal is withdrawn, it can no longer be accepted or rejected by any party. This action effectively nullifies the proposal, removing it from the active decision-making process.
+
+### Counterproposals:
+
+If a user decides to make a counterproposal to an existing proposal, they are effectively suggesting modifications to the original proposal.
+When a counterproposal is made, the original proposal is put on hold and its status changes, usually to reflect that it is awaiting responses regarding the counterproposal.
+
+### Withdrawing a Counterproposal:
+
+If the user withdraws their counterproposal, the original proposal is reactivated.
+Reactivation of Original Proposal: Once reactivated, the original proposal returns to the Pending status. This means that it is again subject to acceptance or rejection by all parties involved. Stakeholders can now either accept the original proposal or choose to counter it again.
+
+### Finalisation of Proposal:
+
+A proposal is marked as Finalised when all owners from all parties accept it. This state indicates that the proposal has been fully agreed upon and is now in effect.
+Significance of Finalisation: Finalisation ensures that all parties are on the same page, and the terms of the proposal are officially accepted, preventing any further modifications or discussions unless a new proposal is initiated.
+
+#### Summary
+
+Pending: The proposal is awaiting responses from all parties. It can be accepted or rejected.
+Withdrawn: The proposal is no longer active, and no actions can be taken on it. This applies to both the original proposal and any counterproposals.
+Finalised: All parties have accepted the proposal, and it is now officially in effect.
+
+## Filtering and Sorting Proposals
+
+The application provides a user-friendly interface to filter and sort proposals using Angular Material components. Users can filter proposals based on their status (e.g., Pending, Accepted) and sort them by different criteria, such as date.
+
+Using the filter, users can filter the proposals from their history based on the selected status, allowing them to quickly identify items that require attention or action.
+By using the dateAsc and dateDsc options, users can filter proposals based on the date they were created.
+The filering and sorting can be applied simultaneously.
+
+### Future Work
+
+- Currently, when a user selects a value from any sort or filter, the selection remains the same (and the new items will be sorted accordingly) even when the user changes. As future work, it is recommended that these fields refresh when a new user is selected. This improvement will enhance the user experience by ensuring that filters and sorts are contextually relevant to the current user's data.
+- Make the app responsive on different screen sizes.
+- Find a more suitable icon for creating a proposal or consider changing the design (for example, by adding a button) to make the UI more intuitive.
+- Enhance the styling
+
 # ItemManager
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.7.
