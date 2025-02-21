@@ -4,13 +4,14 @@
     flex-direction: column;
     position: relative; 
     width: 100%;
+    height: fit-content;
 }
   
 .switch-container {
     display: flex; 
     align-items: flex-start; 
     justify-content: flex-start; 
-    margin-left: 40px;
+    margin-left: 20px;
 }
   
 items-history-container {
