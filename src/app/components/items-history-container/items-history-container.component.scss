@@ -1,37 +1,68 @@
-.container {
-    display: flex; 
-    justify-content: space-between; 
-    width: calc(100% - 40px); 
-    padding: 0 20px; 
-    box-sizing: border-box; 
-    overflow: hidden; 
-    width: 100%;
-    margin-bottom: 50px;
-}
-  
-items-container {
-    width: 40%; 
-    margin-right: 5px; 
-}
-  
-history-container {
-    width: 60%; 
-    margin-left: 5px; 
-}
-  
-@media (max-width: 768px) {
+@media (min-width: 1024px) {
     .container {
-        flex-direction: column; 
-        width: 100%; 
+        display: flex; 
+        justify-content: space-between; 
+        width: calc(100% - 40px); 
+        padding: 0 20px; 
+        box-sizing: border-box; 
+        overflow: hidden; 
+        width: 100%;
+        margin-bottom: 50px;
+    
+        items-container {
+            width: 40%; 
+            margin-right: 5px; 
+        }
+
+        history-container {
+            width: 60%; 
+            margin-left: 5px; 
+        }
+    }
+      
+}
+  
+@media (max-width: 1023px) {
+    .container {
+        display: flex;
+        justify-content: center;
+      flex-direction: column;
+      width: 100%;
+      position: relative;
+      padding: 0 20px; 
+    }
+  
+    .menu-button {
+        display: flex;
+        align-items: center;
+        background-color: #1E6FDD; 
+        color: white;
+        border: none;
+        border-radius: 8px; 
+        padding: 6px 12px; 
+        font-size: 14px; 
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.1s ease;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        width: fit-content;
+  
+        mat-icon {
+            margin-right: 8px;
+        }
+    
+        &:hover {
+            background-color: #1660C9;
+        }
     }
   
     items-container {
-        margin-bottom: 16px;     
+      width: 100%;
     }
-
-    items-container, history-container {
-        // margin: 0; 
-        width: 100%; 
+  
+    history-container {
+      width: 100%;
     }
 }
-  

@@ -1,4 +1,17 @@
 <div class="container">
-  <items-container></items-container>
-  <history-container></history-container>
+  <!-- Small screen layout -->
+  <ng-container *ngIf="isSmallScreen; else largeScreenLayout">
+    <button (click)="toggleItemsContainer()" class="menu-button">
+      <mat-icon>list</mat-icon> Items List
+    </button>
+
+    <items-container *ngIf="isItemsVisible" (click)="onItemsContainerClick()"></items-container>
+    <history-container *ngIf="!isItemsVisible"></history-container>
+  </ng-container>
+
+  <!-- Large screen layout -->
+  <ng-template #largeScreenLayout>
+    <items-container></items-container>
+    <history-container></history-container>
+  </ng-template>
 </div>
