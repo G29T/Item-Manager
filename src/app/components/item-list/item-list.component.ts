@@ -56,9 +56,6 @@ export class ItemListComponent {
         },
     });
 
-    // When a modal is opened aria-hidden="true" is added to the app-root element 
-    // to make the background content inaccessible to assistive technologies 
-    // When the modal is closed previouslyFocusedElement.focus() is restoring focus to the previously focused element
     dialogRef.afterClosed().subscribe(() => {
       if (previouslyFocusedElement) {
         previouslyFocusedElement.focus();
