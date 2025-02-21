@@ -38,6 +38,8 @@ export class ItemListComponent {
   }
 
   openProposalDialog(item: Item): void {
+    const previouslyFocusedElement = document.activeElement as HTMLElement;
+
     const dialogRef = this.dialog.open(ProposalDialogComponent, {
         width: '400px',
         data: {
@@ -46,10 +48,13 @@ export class ItemListComponent {
         },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-            console.log('Proposal submitted:', result);
-        }
+    // When a modal is opened aria-hidden="true" is added to the app-root element 
+    // to make the background content inaccessible to assistive technologies 
+    // When the modal is closed previouslyFocusedElement.focus() is restoring focus to the previously focused element
+    dialogRef.afterClosed().subscribe(() => {
+      if (previouslyFocusedElement) {
+        previouslyFocusedElement.focus();
+      }
     });
   }
 }
