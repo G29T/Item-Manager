@@ -20,6 +20,7 @@ mat-list {
     transition: background-color 0.2s, transform 0.2s; 
     margin-bottom: 5px; 
     min-height: fit-content;
+    width: 100%;
 
     &:hover {
       background-color: #f5f5f5;
@@ -49,37 +50,37 @@ mat-list {
         overflow-wrap: break-word; 
         white-space: normal; 
 
+        span {
+          max-width: fit-content;
+        }
+
         mat-icon {
           margin-left: 8px; 
           color: #3f51b5; 
           font-size: 1.4rem; 
         }
+      }
 
-        button[mat-icon-button] {
-          margin-left: 8px; 
-          color: #3f51b5;
-          font-size: 1.4rem; 
-          border-radius: 50%; 
-          width: 38px;
-          height: 38px;
-          min-width: 38px; 
-          min-height: 38px;
-          display: flex; 
-          align-items: center; 
-          justify-content: center;  
-          padding: 0; 
-          transition: background-color 0.3s, transform 0.2s ease-in-out; 
-        
-          &:hover {
-            background-color: rgba(63, 81, 181, 0.1); 
-            transform: scale(1.1); 
-          }
-        
-          mat-icon {
-            font-size: 20px;
-            color: inherit; 
-            margin-top: 2px;  
-          }
+      .buttons-container { 
+        width: 100%;
+        margin-bottom: 10px;
+
+        .create-proposal-button {
+          margin-left: 8px;
+          font-size: 0.8rem; 
+          padding: 4px 8px; 
+          background-color: #388e3c; 
+          color: #ffffff; 
+          border: none; 
+          border-radius: 4px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); 
+          transition: background-color 0.3s, transform 0.2s; 
+          max-width: fit-content;
+        }
+      
+        .create-proposal-button:hover {
+          background-color: #4caf50; 
+          transform: scale(1.05); 
         }
       }
 

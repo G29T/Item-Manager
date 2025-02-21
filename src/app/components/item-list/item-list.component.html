@@ -13,13 +13,15 @@
 
       <div class="item-content"> 
         <h4 mat-line>
-          {{ item.name }}
+          <span>{{ item.name }}</span>
           <mat-icon *ngIf="(hasPendingProposals(item.id) | async)">hourglass_empty</mat-icon >
           <mat-icon *ngIf="item.isShared">group</mat-icon >
-          <button mat-icon-button *ngIf="item.isShared" (click)="openProposalDialog(item)">
-            <mat-icon>local_offer</mat-icon>
-          </button>
         </h4>
+        <div class="buttons-container">
+          <button mat-button *ngIf="item.isShared" (click)="openProposalDialog(item)" class="create-proposal-button">
+            Create Proposal
+          </button>  
+        </div>
         <p mat-line>{{ item.description }}</p>
         <p mat-line>Total Cost: {{ item.totalCost }}</p>
       </div> 
