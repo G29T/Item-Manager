@@ -2,7 +2,7 @@
 
 This Angular-based application is designed to help users manage items within their party or company. Each item can be linked to a single party or shared among multiple parties, with users always associated with one specific party or company.
 
-This README covers topics such as Key Features, LocalStorage, Icons Explanations, Proposal Lifecycle, Filtering and Sorting Proposals, and Future Work.
+This README covers topics such as Key Features, LocalStorage, Icons Explanations, Proposal Lifecycle, Filtering and Sorting Proposals, Accessibility Considerations - Arial Hidden, and Future Work.
 
 ## Technologies Used
 
