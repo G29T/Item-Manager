@@ -76,7 +76,7 @@ In addition to the initial data loading, it's important to note that the proposa
 
 ## Layout Considerations
 
-Currently, when the screen size changes, the layout adapts, and components may shift positions based on the screen size. However, there is still room for improvement in terms of accessibility and styling to ensure that all screen size scenarios are effectively covered.
+Currently, when the screen size changes, the layout adapts, and components may shift positions based on the screen size. However, there is still room for improvement in terms of accessibility and styling to ensure that all scenarios are effectively covered.
 
 ## Responsive Design for Small Screens
 
@@ -195,19 +195,19 @@ When the dialog is opened, aria-hidden="true" is added to the app-root element t
 
 ### UI Pictures
 
-![LargeScreen-CreatePorposal](LargeScreen-CreatePorposal.png)
-![LargeScreen-FinalisedProposal](LargeScreen-FinalisedProposal.png)
-![LargeScreen-PendingProposal](LargeScreen-PendingProposal.png)
-![LargeScreen-ProposalAccepted](LargeScreen-ProposalAccepted.png)
-![LargeScreen-RejectedProposal](LargeScreen-RejectedProposal.png)
-![LargeScreen-UserSelected](LargeScreen-UserSelected.png)
-![LargeScreen-UserSelectedItemSelected](LargeScreen-UserSelectedItemSelected.png)
-![LargeScreen-WithdrawnPorposal](LargeScreen-WithdrawnPorposal.png)
-![SmallScreen-FinalisedProposal1](SmallScreen-FinalisedProposal1.png)
-![SmallScreen-FinalisedProposal2](SmallScreen-FinalisedProposal2.png)
-![SmallScreen-ItemsComponent](SmallScreen-ItemsComponent.png)
-![SmallScreen-NoProposals](SmallScreen-NoProposals.png)
-![LargeScreen-CreatedProposal](LargeScreen-CreatedProposal.png)
+![LargeScreen-CreatePorposal](images\LargeScreen-CreatedProposal.png)
+![LargeScreen-FinalisedProposal](images\LargeScreen-FinalisedProposal.png)
+![LargeScreen-PendingProposal](images\LargeScreen-PendingProposal.png)
+![LargeScreen-ProposalAccepted](images\LargeScreen-ProposalAccepted.png)
+![LargeScreen-RejectedProposal](images\LargeScreen-RejectedProposal.png)
+![LargeScreen-UserSelected](images\LargeScreen-UserSelected.png)
+![LargeScreen-UserSelectedItemSelected](images\LargeScreen-UserSelectedItemSelected.png)
+![LargeScreen-WithdrawnPorposal](images\LargeScreen-WithdrawnPorposal.png)
+![SmallScreen-FinalisedProposal1](images\SmallScreen-FinalisedProposal1.png)
+![SmallScreen-FinalisedProposal2](images\SmallScreen-FinalisedProposal2.png)
+![SmallScreen-ItemsComponent](images\SmallScreen-ItemsComponent.png)
+![SmallScreen-NoProposals](images\SmallScreen-NoProposals.png)
+![LargeScreen-CreatedProposal](images\LargeScreen-CreatedProposal.png)
 
 # ItemManager
 
