@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Proposal } from '../../models/proposal.model';
 import { Observable, take } from 'rxjs';
 import { User } from '../../models/user.model';
@@ -9,19 +9,19 @@ import { MatDialog } from '@angular/material/dialog';
 import { acceptProposal, setBackToPendingProposal, withdrawProposal } from '../../../store/proposal/proposal.actions';
 import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'proposal-list',
   templateUrl: './proposal-list.component.html',
   styleUrls: ['./proposal-list.component.scss'],
-  imports: [AsyncPipe, CommonModule, FormsModule, NgIf, MatFormField, 
-    MatLabel, MatOptionModule, MatSelectModule, MatListModule, MatCardModule, MatIcon
+  imports: [AsyncPipe, CommonModule, FormsModule, NgIf, MatFormFieldModule, 
+    MatOptionModule, MatSelectModule, MatListModule, MatCardModule, MatIconModule
   ],
 })
 export class ProposalListComponent {

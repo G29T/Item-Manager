@@ -1,26 +1,23 @@
 import { Component } from '@angular/core';
 import { Proposal } from '../../models/proposal.model';
 import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
-import { BehaviorSubject, map, Observable, of, switchMap, take } from 'rxjs';
-import { DataService } from '../../services/data.services';
+import { BehaviorSubject, map, Observable, of, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectProposalsForItem } from '../../../store/proposal/proposal.selector';
 import { selectSelectedItem } from '../../../store/item/item.selectors';
 import { Item } from '../../models/items.model';
 import { MatDialog } from '@angular/material/dialog';
-import { CounterProposalDialogComponent } from '../counterproposal-dialog/counterproposal-dialog.component';
-import { acceptProposal, setBackToPendingProposal, withdrawProposal } from '../../../store/proposal/proposal.actions';
 import { selectCurrentUserId, selectCurrentUserPartyId, selectUsers } from '../../../store/user/user.selectors';
 import { Owner } from '../../models/owner.model';
 import { selectOwnerNameById, selectOwners } from '../../../store/owner/owner.selector';
 import { FormsModule } from '@angular/forms';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { User } from '../../models/user.model';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MatCard, MatCardModule } from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { FilterProposalsComponent } from '../filter-proposals/filter-proposals.component';
 import { SortProposalsComponent } from '../sort-proposals/sort-proposals.component';
 import { ProposalListComponent } from '../proposal-list/proposal-list.component';
@@ -30,9 +27,9 @@ import { ProposalListComponent } from '../proposal-list/proposal-list.component'
   selector: 'history-container',
   templateUrl: './history-container.component.html',
   styleUrls: ['./history-container.component.scss'],
-  imports: [AsyncPipe, CommonModule, FormsModule, NgIf, MatFormField, 
-    MatLabel, MatOptionModule, MatSelectModule, MatListModule, MatCardModule, MatIcon, FilterProposalsComponent,
-  SortProposalsComponent, ProposalListComponent
+  imports: [AsyncPipe, CommonModule, FormsModule, NgIf, MatFormFieldModule, MatOptionModule, 
+    MatSelectModule, MatListModule, MatCardModule, MatIconModule, FilterProposalsComponent,
+    SortProposalsComponent, ProposalListComponent
   ],
 })
 export class HistoryContainerComponent {

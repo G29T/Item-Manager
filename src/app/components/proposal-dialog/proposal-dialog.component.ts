@@ -1,14 +1,14 @@
-import { Component, Output, EventEmitter, Input, OnInit, Inject } from '@angular/core';
+import { Component, Output, EventEmitter, Inject } from '@angular/core';
 import { Proposal } from '../../models/proposal.model';
 import { Item } from '../../models/items.model';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectCurrentUserId, selectSelectedUser, selectUsers } from '../../../store/user/user.selectors';
 import { take } from 'rxjs/operators'; 
-import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatInput, MatInputModule } from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { createProposal } from '../../../store/proposal/proposal.actions';
 import { User } from '../../models/user.model';
 import { selectProposalState } from '../../../store/proposal/proposal.selector';
@@ -21,7 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
   selector: 'proposal-dialog',
   templateUrl: './proposal-dialog.component.html',
   styleUrls: ['./proposal-dialog.component.scss'],
-  imports: [MatFormField, MatLabel, FormsModule, MatInput, CommonModule, MatFormFieldModule, MatInputModule],
+  imports: [MatFormFieldModule, FormsModule, CommonModule, MatFormFieldModule, MatInputModule],
 })
 export class ProposalDialogComponent {
   @Output() submitProposal = new EventEmitter<Proposal[]>();

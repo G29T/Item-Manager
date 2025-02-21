@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { catchError, combineLatest, forkJoin, map, Observable, of, startWith, switchMap, tap } from 'rxjs';
+import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { Item } from '../../models/items.model';
-import { selectItem } from '../../../store/item/item.actions';
 import { selectItemsByUser, selectSelectedItem } from '../../../store/item/item.selectors';
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { ItemsState } from '../../../store/item/item.reducer';
-// import { ProposalHistoryComponent } from '../proposal-history/history-container.component';
 import { selectCurrentUserId, selectUsers } from '../../../store/user/user.selectors';
 import { User } from '../../models/user.model';
 import { SortItemsComponent } from '../sort-items/sort-items.component';

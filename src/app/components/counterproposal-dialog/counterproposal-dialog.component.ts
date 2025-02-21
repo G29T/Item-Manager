@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Proposal } from '../../models/proposal.model';
-import { MatError, MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
-import { MatInput, MatInputModule } from '@angular/material/input';
-import { MatButton } from '@angular/material/button';
+import { MatError, MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { CommonModule, NgClass } from '@angular/common';
 import { selectCurrentUserId, selectSelectedUser, selectUsers } from '../../../store/user/user.selectors';
 import { Observable, take } from 'rxjs';
@@ -21,7 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
   selector: 'counterproposal-dialog',
   templateUrl: './counterproposal-dialog.component.html',
   styleUrls: ['./counterproposal-dialog.component.scss'],
-  imports: [MatFormField, MatLabel, MatButton, CommonModule, NgClass ,FormsModule, MatFormFieldModule, MatInputModule, MatInput, MatError],
+  imports: [MatButtonModule, CommonModule, NgClass ,FormsModule, MatFormFieldModule, MatInputModule, MatError],
 })
 export class CounterProposalDialogComponent {
   comment: string = '';
