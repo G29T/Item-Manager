@@ -1,7 +1,7 @@
 <mat-list *ngIf="proposals?.length; else noProposalsTemplate">
     <mat-list-item *ngFor="let proposal of proposals" class="list-item">
         <mat-card class="proposal-card">
-            <mat-card-content>
+            <mat-card-content class="card-content">
                 <div class="proposal-header">
                     <div class="status">
                         <span [ngClass]="{ 
@@ -80,7 +80,7 @@
                             </span>
                         </ng-container>
                     </ng-container>
-                    <strong class="proposal-date">{{ proposal.createdAt | date }}</strong>
+                    <strong class="proposal-date">{{ proposal.createdAt | date: 'medium' }}</strong>
                 </div>
             </mat-card-actions>
         </mat-card>
