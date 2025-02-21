@@ -16,5 +16,3 @@ export const selectItemsByUser = createSelector(
         return partyId ? items.filter(item => item.ownerIds.includes(partyId)) : [];
     }
   );
-  
-// export const selectSharedItems = createSelector(selectAllItems, (items) => items.filter((item) => item.shared));

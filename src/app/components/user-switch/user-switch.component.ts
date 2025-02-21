@@ -5,7 +5,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { loadItems, loadItemsByUser, selectItem } from '../../../store/item/item.actions';
+import { loadItems, loadItemsByUser, resetSelectedItem, selectItem } from '../../../store/item/item.actions';
 import { loadUsers, selectUser, setCurrentUser } from '../../../store/user/user.actions';
 import { selectCurrentUserId, selectUsers } from '../../../store/user/user.selectors';
 import { map, Observable, take } from 'rxjs';
@@ -54,6 +54,7 @@ export class UserSwitchComponent implements OnInit {
         ).subscribe(currentUserId => {
             if (currentUserId === user.id) { 
                 console.log('User ID is set correctly. Loading items...');
+                this.store.dispatch(resetSelectedItem());
                 this.store.dispatch(loadItemsByUser());
             } else {
                 console.warn('User ID was not set correctly. Items will not be loaded.');

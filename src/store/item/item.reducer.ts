@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { Item } from '../../app/models/items.model';
-import { loadItemsByUserSuccess, loadItemsSuccess, selectItem, updateItem } from './item.actions';
+import { loadItemsByUserSuccess, loadItemsSuccess, resetSelectedItem, selectItem, updateItem } from './item.actions';
 
 export interface ItemsState {
   items: Item[];
@@ -29,5 +29,6 @@ export const itemReducer = createReducer(
   on(updateItem, (state, { item }) => ({
     ...state,
     items: state.items.map((i) => (i.id === item.id ? item : i)),
-  }))
+  })),
+  on(resetSelectedItem, () => ({ ...initialState }))
 );

@@ -6,7 +6,7 @@ import { selectItem } from '../../../store/item/item.actions';
 import { selectItemsByUser, selectSelectedItem } from '../../../store/item/item.selectors';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { ItemsState } from '../../../store/item/item.reducer';
-import { ProposalHistoryComponent } from '../proposal-history/proposal-history.component';
+// import { ProposalHistoryComponent } from '../proposal-history/history-container.component';
 import { selectCurrentUserId, selectUsers } from '../../../store/user/user.selectors';
 import { User } from '../../models/user.model';
 import { SortItemsComponent } from '../sort-items/sort-items.component';
@@ -17,16 +17,16 @@ import { ItemUtilsService } from '../../services/item-utils.service';
   selector: 'items-container',
   templateUrl: './items-container.component.html',
   styleUrls: ['./items-container.component.scss'],
-  imports: [SortItemsComponent, ItemListComponent, ProposalHistoryComponent, CommonModule, AsyncPipe],
+  imports: [SortItemsComponent, ItemListComponent, CommonModule, AsyncPipe],
 })
-export class ItemsContainer {
+export class ItemsContainerComponent {
     userItems$: Observable<Item[]>;
     selectedItem$: Observable<Item | null>;
     currentUserId$: Observable<number | null>;
     users$: Observable<User[]>;
     sortingCriterion: 'nameAsc' | 'nameDsc' | 'costAsc' | 'costDsc' | 'pendingStatus' = 'nameAsc';
 
-    constructor(private store: Store<ItemsState>, private itemUtils: ItemUtilsService) {
+    constructor(private store: Store, private itemUtils: ItemUtilsService) {
         this.currentUserId$ = this.store.select(selectCurrentUserId);
         this.userItems$ = this.store.select(selectItemsByUser).pipe(
             map(items => items || []),
@@ -36,16 +36,6 @@ export class ItemsContainer {
         this.users$ = this.store.select(selectUsers); 
     }
   
-    onSelectItem(item: Item): void {
-        this.store.dispatch(selectItem({ item }));
-    }
-  
-//   setSortingCriterion(criterion: string) {
-//     if (['nameAsc', 'nameDsc', 'costAsc', 'costDsc', 'pendingStatus'].includes(criterion)) {
-//       this.sortingCriterion = criterion as 'nameAsc' | 'nameDsc' | 'costAsc' | 'costDsc' | 'pendingStatus';
-//       this.sortItems(); 
-//     }
-//   }
 
     setSortingCriterion(criterion: string) {
         this.sortingCriterion = criterion as 'nameAsc' | 'nameDsc' | 'costAsc' | 'costDsc' | 'pendingStatus';;

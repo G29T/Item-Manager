@@ -27,15 +27,15 @@ import { ProposalListComponent } from '../proposal-list/proposal-list.component'
 
 
 @Component({
-  selector: 'proposal-history',
-  templateUrl: './proposal-history.component.html',
-  styleUrls: ['./proposal-history.component.scss'],
+  selector: 'history-container',
+  templateUrl: './history-container.component.html',
+  styleUrls: ['./history-container.component.scss'],
   imports: [AsyncPipe, CommonModule, FormsModule, NgIf, MatFormField, 
     MatLabel, MatOptionModule, MatSelectModule, MatListModule, MatCardModule, MatIcon, FilterProposalsComponent,
   SortProposalsComponent, ProposalListComponent
   ],
 })
-export class ProposalHistoryComponent {
+export class HistoryContainerComponent {
   selectedItem$: Observable<Item | null>;
   currentUserId$: Observable<number | null>;
   proposalsByItem$: Observable<Proposal[] | null>;

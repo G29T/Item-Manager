@@ -1,0 +1,31 @@
+.container {
+    display: flex; 
+    justify-content: space-between; 
+    width: calc(100% - 40px); 
+    padding: 0 20px; 
+    box-sizing: border-box; 
+    overflow: hidden; 
+}
+  
+items-container {
+    flex: 0 0 40%; 
+    margin-right: 10px; 
+}
+  
+history-container {
+    flex: 0 0 60%; 
+    margin-left: 10px; 
+}
+  
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; 
+        width: 100%; 
+    }
+  
+    items-container, history-container {
+        margin: 0; 
+        width: 100%; 
+    }
+}
+  

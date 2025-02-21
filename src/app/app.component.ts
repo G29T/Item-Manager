@@ -12,10 +12,12 @@ import { MatListModule } from '@angular/material/list';
 import { DataService } from './services/data.services';
 // import { ProposalFormComponent } from './components/proposal-dialog/proposal-dialog.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ProposalHistoryComponent } from './components/proposal-history/proposal-history.component';
+// import { ProposalHistoryComponent } from './components/proposal-history/history-container.component';
 import { CounterProposalDialogComponent } from './components/counterproposal-dialog/counterproposal-dialog.component';
-import { ItemsContainer } from './components/items-container/items-container.component';
+// import { ItemsContainer } from './components/items-container/items-container.component';
 import { ProposalDialogComponent } from './components/proposal-dialog/proposal-dialog.component';
+import { ItemsHistoryConatinerComponent } from './components/items-history-container/items-history-container.component';
+import { HistoryContainerComponent } from './components/proposal-history/history-container.component';
 
 @Component({
   selector: 'app-root',
@@ -35,10 +37,10 @@ import { ProposalDialogComponent } from './components/proposal-dialog/proposal-d
     MatInputModule,
     UserSwitchComponent,
     ItemListComponent, 
-    ProposalHistoryComponent,
     ProposalDialogComponent,
     CounterProposalDialogComponent,
-    ItemsContainer
+    ItemsHistoryConatinerComponent,
+    HistoryContainerComponent
   ],
   providers: [DataService],
 })

@@ -6,8 +6,10 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { Proposal } from '../../models/proposal.model';
 import { ProposalDialogComponent } from '../proposal-dialog/proposal-dialog.component';
+import { Store } from '@ngrx/store';
+import { selectSelectedItem } from '../../../store/item/item.selectors';
+import { selectItem } from '../../../store/item/item.actions';
 
 @Component({
   selector: 'item-list',
@@ -19,15 +21,20 @@ import { ProposalDialogComponent } from '../proposal-dialog/proposal-dialog.comp
 export class ItemListComponent {
   @Input() items: Item[] = []; 
   @Input() hasPendingProposals!: (itemId: number) => Observable<boolean>;
-  @Output() itemSelected = new EventEmitter<Item>();
 
-  selectedItemId: number | null = null; 
+  selectedItem$: Observable<Item | null>;
+  sortingCriterion: 'nameAsc' | 'nameDsc' | 'costAsc' | 'costDsc' | 'pendingStatus' = 'nameAsc';
+  selectedItemId: number | null = null;
 
-  constructor(private dialog: MatDialog) {}
-
-  onSelectItem(item: Item) {
-    this.selectedItemId = item.id; 
-    this.itemSelected.emit(item);
+  constructor(private store: Store, private dialog: MatDialog) {
+    this.selectedItem$ = this.store.select(selectSelectedItem);
+    this.selectedItem$.subscribe(item => {
+      this.selectedItemId = item ? item.id : null; 
+    });
+  }
+  
+  onSelectItem(item: Item): void {
+    this.store.dispatch(selectItem({ item }));
   }
 
   openProposalDialog(item: Item): void {

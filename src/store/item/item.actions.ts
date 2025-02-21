@@ -35,3 +35,7 @@ export const updateItem = createAction(
     '[Item] Update Item', 
     props<{ item: Item }>()
 );
+
+export const resetSelectedItem = createAction(
+    '[Item] Reset Selected Item'
+);
