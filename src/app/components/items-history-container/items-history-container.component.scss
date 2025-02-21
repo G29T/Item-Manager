@@ -3,7 +3,6 @@
         display: flex; 
         justify-content: space-between; 
         width: calc(100% - 40px); 
-        padding: 0 20px; 
         box-sizing: border-box; 
         overflow: hidden; 
         width: 100%;
@@ -29,7 +28,6 @@
       flex-direction: column;
       width: 100%;
       position: relative;
-      padding: 0 20px; 
     }
   
     .menu-button {
