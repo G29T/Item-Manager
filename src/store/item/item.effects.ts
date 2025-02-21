@@ -9,10 +9,12 @@ import { of, from } from 'rxjs';
 export class ItemEffects {
   constructor(private actions$: Actions, private dataService: DataService) {}
 
+  // Checks if the item is shared with other parties
+  // rather than other users which can be from the same party
   private addSharedFlagToItems(items: any[], users: any[]): any[] {
     return items.map(item => ({
       ...item,
-      isShared: users.some(user => item.ownerIds.includes(user.partyId))
+      isShared: item.ownerIds.length > 1 && users.some(user => item.ownerIds.includes(user.partyId) )
     }));
   }
 
