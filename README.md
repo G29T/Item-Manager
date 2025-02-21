@@ -195,19 +195,19 @@ When the dialog is opened, aria-hidden="true" is added to the app-root element t
 
 ### UI Pictures
 
-![LargeScreen-CreatePorposal](images\LargeScreen-CreatedProposal.png)
-![LargeScreen-FinalisedProposal](images\LargeScreen-FinalisedProposal.png)
-![LargeScreen-PendingProposal](images\LargeScreen-PendingProposal.png)
-![LargeScreen-ProposalAccepted](images\LargeScreen-ProposalAccepted.png)
-![LargeScreen-RejectedProposal](images\LargeScreen-RejectedProposal.png)
-![LargeScreen-UserSelected](images\LargeScreen-UserSelected.png)
-![LargeScreen-UserSelectedItemSelected](images\LargeScreen-UserSelectedItemSelected.png)
-![LargeScreen-WithdrawnPorposal](images\LargeScreen-WithdrawnPorposal.png)
-![SmallScreen-FinalisedProposal1](images\SmallScreen-FinalisedProposal1.png)
-![SmallScreen-FinalisedProposal2](images\SmallScreen-FinalisedProposal2.png)
-![SmallScreen-ItemsComponent](images\SmallScreen-ItemsComponent.png)
-![SmallScreen-NoProposals](images\SmallScreen-NoProposals.png)
-![LargeScreen-CreatedProposal](images\LargeScreen-CreatedProposal.png)
+![LargeScreen-CreatePorposal](images/LargeScreen-CreatedProposal.png)
+![LargeScreen-FinalisedProposal](images/LargeScreen-FinalisedProposal.png)
+![LargeScreen-PendingProposal](images/LargeScreen-PendingProposal.png)
+![LargeScreen-ProposalAccepted](images/LargeScreen-ProposalAccepted.png)
+![LargeScreen-RejectedProposal](images/LargeScreen-RejectedProposal.png)
+![LargeScreen-UserSelected](images/LargeScreen-UserSelected.png)
+![LargeScreen-UserSelectedItemSelected](images/LargeScreen-UserSelectedItemSelected.png)
+![LargeScreen-WithdrawnPorposal](images/LargeScreen-WithdrawnPorposal.png)
+![SmallScreen-FinalisedProposal1](images/SmallScreen-FinalisedProposal1.png)
+![SmallScreen-FinalisedProposal2](images/SmallScreen-FinalisedProposal2.png)
+![SmallScreen-ItemsComponent](images/SmallScreen-ItemsComponent.png)
+![SmallScreen-NoProposals](images/SmallScreen-NoProposals.png)
+![LargeScreen-CreatedProposal](images/LargeScreen-CreatedProposal.png)
 
 # ItemManager
 
