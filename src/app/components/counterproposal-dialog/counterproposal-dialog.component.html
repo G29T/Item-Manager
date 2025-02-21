@@ -2,7 +2,7 @@
 <div mat-dialog-content class="custom-dialog-content">
   <mat-form-field class="full-width">
     <mat-label>Comment</mat-label>
-    <input matInput [(ngModel)]="comment" name="proposalComment" required />
+    <textarea matInput [(ngModel)]="comment" name="proposalComment" maxlength="90" required></textarea>
   </mat-form-field>
 
   <div *ngFor="let owner of data.selectedProposal.ownerIds">
