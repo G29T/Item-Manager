@@ -18,6 +18,7 @@ import { CounterProposalDialogComponent } from './components/counterproposal-dia
 import { ProposalDialogComponent } from './components/proposal-dialog/proposal-dialog.component';
 import { ItemsHistoryConatinerComponent } from './components/items-history-container/items-history-container.component';
 import { HistoryContainerComponent } from './components/proposal-history/history-container.component';
+import { ManagerContainerComponent } from './components/manager-container/manager-container.component';
 
 @Component({
   selector: 'app-root',
@@ -40,7 +41,8 @@ import { HistoryContainerComponent } from './components/proposal-history/history
     ProposalDialogComponent,
     CounterProposalDialogComponent,
     ItemsHistoryConatinerComponent,
-    HistoryContainerComponent
+    HistoryContainerComponent,
+    ManagerContainerComponent
   ],
   providers: [DataService],
 })
