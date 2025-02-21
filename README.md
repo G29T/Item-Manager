@@ -213,6 +213,7 @@ When the dialog is opened, aria-hidden="true" is added to the app-root element t
 - Work more on responsiveness and UI.
 - It could be beneficial for both the Items Container and History Container to have fixed sizes on large screens, with a scrolling functionality to enhance user experience.
 - There is ongoing work to improve accessibility within the Proposal Dialog, including adjustments to text sizes and other UI elements.
+- State management improvements.
 - Further enhancements in UI design are necessary to ensure a more inclusive experience for all users.
 
 ### UI Pictures
