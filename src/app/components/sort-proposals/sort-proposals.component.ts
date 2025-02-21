@@ -5,7 +5,6 @@ import { MatSelectModule } from '@angular/material/select';
 @Component({
     selector: 'sort-proposals',
     templateUrl: './sort-proposals.component.html',
-    styleUrls: ['./sort-proposals.component.scss'],
     imports: [MatFormFieldModule, MatSelectModule],
 })
 export class SortProposalsComponent {
