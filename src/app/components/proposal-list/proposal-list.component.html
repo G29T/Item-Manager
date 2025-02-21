@@ -25,8 +25,9 @@
             </div>
         </div>
         <div class="proposal-comment">
-            <span>Comment: {{ proposal.comment }}</span>
-        </div>
+            <span class="label">Comment:</span>
+            <span class="text">{{ proposal.comment }}</span>
+        </div>        
         <div class="proposal-info">
             <div class="payment-ratios">
             <div *ngFor="let ownerId of proposal.ownerIds">

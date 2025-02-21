@@ -54,13 +54,24 @@ mat-list {
     }
   
     .proposal-comment {
-        margin: 8px 0;
+        text-align: left;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
+        justify-content: flex-start; 
+
+        flex: 0 0 60%;
+        max-width: 80%; 
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
     
-        span {
+        .label {
             margin-right: 8px;
-            font-weight: 500;
+            font-weight: 500; 
+        }
+    
+        .text {
+            font-weight: 300; 
         }
     }
   
