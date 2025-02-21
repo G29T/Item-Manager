@@ -1,0 +1,18 @@
+.container {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    display: flex; 
+    flex-direction: column;
+    position: relative; 
+}
+  
+.switch-container {
+    display: flex; 
+    align-items: flex-start; 
+    justify-content: flex-start; 
+    margin-left: 40px;
+}
+  
+items-history-container {
+    margin: 0 20px
+}
