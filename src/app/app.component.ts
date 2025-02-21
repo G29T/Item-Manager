@@ -19,6 +19,11 @@ import { ProposalDialogComponent } from './components/proposal-dialog/proposal-d
 import { ItemsHistoryConatinerComponent } from './components/items-history-container/items-history-container.component';
 import { HistoryContainerComponent } from './components/proposal-history/history-container.component';
 import { ManagerContainerComponent } from './components/manager-container/manager-container.component';
+import { Store } from '@ngrx/store';
+import { loadUsers } from '../store/user/user.actions';
+import { loadItems } from '../store/item/item.actions';
+import { loadProposals } from '../store/proposal/proposal.actions';
+import { loadOwners } from '../store/owner/owner.actions';
 
 @Component({
   selector: 'app-root',
@@ -49,7 +54,12 @@ import { ManagerContainerComponent } from './components/manager-container/manage
 export class AppComponent {
   title = 'item-manager';
 
+  constructor(private store: Store) {}
+
   ngOnInit(): void {
-    
+    this.store.dispatch(loadUsers());
+    this.store.dispatch(loadItems());
+    this.store.dispatch(loadOwners());
+    this.store.dispatch(loadProposals());
   }
 }
