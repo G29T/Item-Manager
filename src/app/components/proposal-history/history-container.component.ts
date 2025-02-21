@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Proposal } from '../../models/proposal.model';
 import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
-import { BehaviorSubject, map, Observable, of, switchMap } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, map, Observable, of, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectProposalsForItem } from '../../../store/proposal/proposal.selector';
 import { selectSelectedItem } from '../../../store/item/item.selectors';
@@ -42,6 +42,7 @@ export class HistoryContainerComponent {
   sortingCriterion: 'dateAsc' | 'dateDsc' = 'dateDsc';
   private filterStatusSubject = new BehaviorSubject<'Pending' | 'Accepted' | 'Rejected'  | 'Withdrawn' | 'Finalised' | '' | null>(null);
   filterStatus$ = this.filterStatusSubject.asObservable();
+  isItemSelected: boolean = false;
 
   constructor(private store: Store, private dialog: MatDialog) {
     this.currentUserId$ = this.store.select(selectCurrentUserId);
@@ -70,6 +71,11 @@ export class HistoryContainerComponent {
         );
       })
     );
+  }
+
+  async checkIfItemWasSelected() {
+    const currentItem = await firstValueFrom(this.selectedItem$);
+    this.isItemSelected = currentItem !== null;
   }
 
   get filterStatusValue(): 'Pending' | 'Accepted' | 'Rejected' | 'Withdrawn' | 'Finalised' | '' | null {
