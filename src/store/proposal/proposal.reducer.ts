@@ -132,13 +132,16 @@ export const proposalReducer = createReducer(
   }),
 
   on(ProposalActions.acceptProposal, (state, { proposalId, userId }) => {
+
     const userProposals = state.proposals[userId] || [];
     const updatedProposals = JSON.parse(JSON.stringify(state.proposals));
+
+    let allAccepted = false;
 
     for (const key in updatedProposals) {
       updatedProposals[key] = updatedProposals[key].map((proposal: Proposal) => {
         if (proposal.id !== proposalId) return proposal;
-
+   
         return {
           ...proposal,
           usersResponses: proposal.usersResponses.map(response =>
@@ -148,9 +151,19 @@ export const proposalReducer = createReducer(
       });
     }
 
-    const allAccepted = updatedProposals[userId]?.some((proposal: Proposal) =>
-      proposal.usersResponses.every(response => response.accept)
-    );
+    for (const key in updatedProposals) {
+      updatedProposals[key].forEach((proposal: Proposal) => {
+        if (proposal.id === proposalId) {
+          const allResponsesAccepted = proposal.usersResponses.every(response => response.accept === true);
+  
+          if (allResponsesAccepted) {
+            allAccepted = true;
+          } else {
+            allAccepted = false;
+          }
+        }
+      });
+    }
 
     if (allAccepted) {
       for (const key in updatedProposals) {
