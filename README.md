@@ -82,45 +82,22 @@ Currently, when the screen size changes, the layout adapts, and components may s
 
 On screens smaller than 1024 pixels, the component allows users to view and select items by pressing the Items List button located in the top-left corner of the screen.
 
-### Select Items button & Items Container
-
-#### Initial State:
+### Initial State:
 
 The Proposals History is displayed on the screen along with the Select User dropdown and the Items List button.
 
-#### Displaying Items:
+### Displaying Items:
 
 When the Items List button is pressed, the Proposals History disappears, and the Items Container is displayed.
 
-#### Closing the Items Container:
+### Closing the Items Container:
 
 The Items Container can be closed in two ways:
 
-- By selecting an item from the Items Container.
+- By selecting an item from the list of items.
 - By toggling the Items List button again.
 
-#### Returning to Proposals History:
-
-After closing the Items Container, the Proposals History is displayed again, showing the appropriate data.
-
-### Proposals History
-
-#### Initial State:
-
-The Proposals History is displayed on the screen along with the Select User dropdown and the Items List button.
-
-#### Displaying Items:
-
-When the Items List button is pressed, the Proposals History disappears, and the Items Container is displayed.
-
-#### Closing the Items Container:
-
-The Items Container can be closed in two ways:
-
-- By selecting an item from the Items Container.
-- By toggling the Items List button again.
-
-#### Returning to Proposals History:
+### Returning to Proposals History:
 
 After closing the Items Container, the Proposals History is displayed again, showing the appropriate data.
 
@@ -128,12 +105,9 @@ After closing the Items Container, the Proposals History is displayed again, sho
 
 ### Hover Effects:
 
-When users hover over the proposals and items in the lists, visual effects are applied (such as shadows), giving the impression that the items are coming out of the background. This enhances the user experience and provides a more interactive feel.
+When users hover over the proposals and items in the lists, visual effects are applied (such as shadows etc.), giving the impression that the items are coming out of the background. This enhances the user experience and provides a more interactive feel.
 
 ## Icons
-
--Icon: local_offer
-Meaning: Represents the action of making a proposal. When clicked, it triggers the openProposalDialog(item) method, which opens a dialog box containing the form necessary for creating a new proposal.
 
 - Icon: group
   Meaning: Indicates that the item is shared with other users.
@@ -162,35 +136,40 @@ When a user makes a proposal, it is submitted for review by all owners from the 
 ### Withdrawal of Proposal:
 
 If the proposal has not been accepted by all parties, the user has the option to withdraw the proposal.
-Impact of Withdrawal: Once a proposal is withdrawn, it can no longer be accepted or rejected by any party. This action effectively nullifies the proposal, removing it from the active decision-making process.
+
+- Impact of Withdrawal: Once a proposal is withdrawn, it can no longer be accepted or rejected by any party. This action effectively nullifies the proposal, removing it from the active decision-making process.
 
 ### Counterproposals:
 
 If a user decides to make a counterproposal to an existing proposal, they are effectively suggesting modifications to the original proposal.
-When a counterproposal is made, the original proposal is put on hold and its status changes, usually to reflect that it is awaiting responses regarding the counterproposal.
+When a counterproposal is made, the original proposal is put on hold and its status changes to Rejected.
 
 ### Withdrawing a Counterproposal:
 
 If the user withdraws their counterproposal, the original proposal is reactivated.
-Reactivation of Original Proposal: Once reactivated, the original proposal returns to the Pending status. This means that it is again subject to acceptance or rejection by all parties involved. Stakeholders can now either accept the original proposal or choose to counter it again.
+
+- Reactivation of Original Proposal: Once reactivated, the original proposal returns to the Pending status. This means that it is again subject to acceptance or rejection by all parties involved. Stakeholders can now either accept the original proposal or choose to counter it again.
 
 ### Finalisation of Proposal:
 
 A proposal is marked as Finalised when all owners from all parties accept it. This state indicates that the proposal has been fully agreed upon and is now in effect.
-Significance of Finalisation: Finalisation ensures that all parties are on the same page, and the terms of the proposal are officially accepted, preventing any further modifications or discussions unless a new proposal is initiated.
+
+- Significance of Finalisation: Finalisation ensures that all parties are on the same page, and the terms of the proposal are officially accepted, preventing any further modifications or discussions unless a new proposal is initiated.
 
 #### Summary
 
-Pending: The proposal is awaiting responses from all parties. It can be accepted or rejected.
-Withdrawn: The proposal is no longer active, and no actions can be taken on it. This applies to both the original proposal and any counterproposals.
-Finalised: All parties have accepted the proposal, and it is now officially in effect.
+- Pending: The proposal is awaiting responses from all parties. It can be accepted or rejected.
+- Withdrawn: The proposal is no longer active, and no actions can be taken on it. This applies to both the original proposal and any counterproposals.
+- Finalised: All parties have accepted the proposal, and it is now officially in effect.
 
 ## Filtering and Sorting Proposals
 
 The application provides a user-friendly interface to filter and sort proposals using Angular Material components. Users can filter proposals based on their status (e.g., Pending, Accepted) and sort them by different criteria, such as date.
 
 Using the filter, users can filter the proposals from their history based on the selected status, allowing them to quickly identify items that require attention or action.
+
 By using the dateAsc and dateDsc options, users can filter proposals based on the date they were created.
+
 The filering and sorting can be applied simultaneously.
 
 ## Accessibility Considerations
@@ -203,13 +182,11 @@ The openProposalDialog method saves the currently focused element before opening
 It configures the dialog with a minimum width of 400 pixels and passes the item data along with a title for the dialog.
 When the dialog is closed, it restores focus to the element that was focused before the dialog was opened, ensuring a better user experience, particularly for users relying on assistive technologies.
 
-#### Accessibility Considerations
-
 When the dialog is opened, aria-hidden="true" is added to the app-root element to prevent background content from being accessible to assistive technologies. This improves accessibility by focusing user attention on the dialog content.
 
 ### Future Work
 
-- Currently, when a user selects a value from any sort or filter, the selection remains the same (and the new items will be sorted accordingly) even when the user changes. As future work, it is recommended that these fields refresh when a new user is selected. This improvement will enhance the user experience by ensuring that filters and sorts are contextually relevant to the current user's data.
+- Currently, when a user selects a value from any sort or filter, the selection remains the same (and the new items will be sorted accordingly) even when the user changes. As future work, it is recommended that these fields refresh when a new user is selected. However, the actions of sorting and filtering are functioning correctly.
 - Work more on responsiveness and UI.
 - It could be beneficial for both the Items Container and History Container to have fixed sizes on large screens, with a scrolling functionality to enhance user experience.
 - There is ongoing work to improve accessibility within the Proposal Dialog, including adjustments to text sizes and other UI elements.
