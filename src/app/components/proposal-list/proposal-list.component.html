@@ -48,13 +48,22 @@
         </mat-card-content>
         <mat-card-actions class="proposal-actions">
         <div class="buttons-container">
-            <button mat-button class="withdraw" *ngIf="proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised' && proposal.status !== 'Rejected' && (currentUserId$ | async) === proposal.userId" (click)="withdrawProposal(proposal)">
+            <button mat-button class="withdraw" *ngIf="proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' &&
+                proposal.status !== 'Finalised' && proposal.status !== 'Rejected' && (currentUserId$ | async) === proposal.userId" 
+                (click)="withdrawProposal(proposal)"
+            >
             Withdraw
             </button>
-            <button mat-button class="accept" *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised' && (currentUserId$ | async) !== proposal.userId" (click)="acceptProposal(proposal)">
+            <button mat-button class="accept" *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && 
+                proposal.status !== 'Accepted' && proposal.status !== 'Finalised' && (currentUserId$ | async) !== proposal.userId" 
+                (click)="acceptProposal(proposal)"
+            >
             Accept
             </button>
-            <button mat-button class="reject" *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && proposal.status !== 'Accepted' && proposal.status !== 'Finalised' && (currentUserId$ | async) !== proposal.userId" (click)="openCounterProposalDialog(proposal)">
+            <button mat-button class="reject" *ngIf="proposal.status !== 'Rejected' && proposal.status !== 'Withdrawn' && 
+                proposal.status !== 'Accepted' && proposal.status !== 'Finalised' && (currentUserId$ | async) !== proposal.userId" 
+                (click)="openCounterProposalDialog(proposal)"
+            >
             Reject
             </button>
         </div>
