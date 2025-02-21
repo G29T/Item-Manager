@@ -137,6 +137,37 @@ Using the filter, users can filter the proposals from their history based on the
 By using the dateAsc and dateDsc options, users can filter proposals based on the date they were created.
 The filering and sorting can be applied simultaneously.
 
+## Accessibility Considerations - Arial Hidden
+
+The openProposalDialog method is responsible for opening a dialog box where users can create a proposal for a specific item. It utilizes Angular Material's dialog component to display the ProposalDialogComponent.
+
+````typescript
+openProposalDialog(item: Item): void {
+    const previouslyFocusedElement = document.activeElement as HTMLElement;
+
+    const dialogRef = this.dialog.open(ProposalDialogComponent, {
+        minWidth: '400px',
+        data: {
+            dialogTitle: 'Proposal',
+            item: item,
+        },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      if (previouslyFocusedElement) {
+        previouslyFocusedElement.focus();
+      }
+    });
+}
+
+The method saves the currently focused element before opening the dialog.
+It configures the dialog with a minimum width of 400 pixels and passes the item data along with a title for the dialog.
+When the dialog is closed, it restores focus to the element that was focused before the dialog was opened, ensuring a better user experience, particularly for users relying on assistive technologies.
+
+#### Accessibility Considerations
+
+When the dialog is opened, aria-hidden="true" is added to the app-root element to prevent background content from being accessible to assistive technologies. This improves accessibility by focusing user attention on the dialog content.
+
 ### Future Work
 
 - Currently, when a user selects a value from any sort or filter, the selection remains the same (and the new items will be sorted accordingly) even when the user changes. As future work, it is recommended that these fields refresh when a new user is selected. This improvement will enhance the user experience by ensuring that filters and sorts are contextually relevant to the current user's data.
@@ -154,7 +185,7 @@ To start a local development server, run:
 
 ```bash
 ng serve
-```
+````
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
