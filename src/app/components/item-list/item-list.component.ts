@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Item } from '../../models/items.model';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable, take } from 'rxjs';
 import { MatListModule } from '@angular/material/list';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
@@ -10,6 +10,8 @@ import { ProposalDialogComponent } from '../proposal-dialog/proposal-dialog.comp
 import { Store } from '@ngrx/store';
 import { selectSelectedItem } from '../../../store/item/item.selectors';
 import { selectItem } from '../../../store/item/item.actions';
+import { User } from '../../models/user.model';
+import { selectSelectedUser } from '../../../store/user/user.selectors';
 
 @Component({
   selector: 'item-list',
@@ -21,16 +23,23 @@ import { selectItem } from '../../../store/item/item.actions';
 export class ItemListComponent {
   @Input() items: Item[] = []; 
   @Input() hasPendingProposals!: (itemId: number) => Observable<boolean>;
-
+  currentUser$: Observable<User | null>
   selectedItem$: Observable<Item | null>;
   sortingCriterion: 'nameAsc' | 'nameDsc' | 'costAsc' | 'costDsc' | 'pendingStatus' = 'nameAsc';
   selectedItemId: number | null = null;
+  isUserSelected: boolean = false;
 
   constructor(private store: Store, private dialog: MatDialog) {
+    this.currentUser$ = this.store.select(selectSelectedUser);
     this.selectedItem$ = this.store.select(selectSelectedItem);
     this.selectedItem$.subscribe(item => {
       this.selectedItemId = item ? item.id : null; 
     });
+  }
+  
+  async checkIfUserWasSelected() {
+    const currentUser = await firstValueFrom(this.currentUser$);
+    this.isUserSelected = currentUser !== null;
   }
   
   onSelectItem(item: Item): void {
@@ -41,7 +50,7 @@ export class ItemListComponent {
     const previouslyFocusedElement = document.activeElement as HTMLElement;
 
     const dialogRef = this.dialog.open(ProposalDialogComponent, {
-        width: '400px',
+        minWidth: '400px',
         data: {
             dialogTitle: 'Proposal',
             item: item,
