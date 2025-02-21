@@ -76,8 +76,6 @@ export class HistoryContainerComponent {
     return this.filterStatusSubject.value;
   }
 
-  //kept getUsersFromSameParty and getAcceptedUsersFromSameParty as separate because for further development 
-  // I might need getPartyMembers
   getPartyMembers(): Observable<User[]> {
     return this.currentUserPartyId$.pipe(
       switchMap((partyId) => {

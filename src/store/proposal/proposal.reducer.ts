@@ -219,7 +219,6 @@ export const proposalReducer = createReducer(
     };
   }),
 
-  // Object.keys
   on(ProposalActions.withdrawProposal, (state, { proposalId }) => {
     const updatedProposals = JSON.parse(JSON.stringify(state.proposals));
 

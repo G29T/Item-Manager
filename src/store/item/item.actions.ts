@@ -25,7 +25,6 @@ export const loadItemsByUserFailure = createAction(
     props<{ error: any }>()
 );
 
-// export const filterItemsByUser = createAction('[Item] Filter Items By User', props<{ userId: number }>());
 export const selectItem = createAction(
     '[Item] Select Item', 
     props<{ item: Item | null }>()

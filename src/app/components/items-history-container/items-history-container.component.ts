@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class ItemsHistoryConatinerComponent {
 
-  @ViewChild('itemsContainer', { static: false }) itemsContainer!: ElementRef;
+  // @ViewChild('itemsContainer', { static: false }) itemsContainer!: ElementRef;
   
   constructor(private eRef: ElementRef) {}
   
@@ -23,17 +23,17 @@ export class ItemsHistoryConatinerComponent {
       this.isItemsVisible = !this.isItemsVisible;
     }
 
-    @HostListener('document:click', ['$event'])
-    handleClickOutside(event: MouseEvent) {
-      const target = event.target as HTMLElement;
+    // @HostListener('document:click', ['$event'])
+    // handleClickOutside(event: MouseEvent) {
+    //   const target = event.target as HTMLElement;
 
-      if (this.isSmallScreen && this.isItemsVisible && this.itemsContainer) {
-        const itemsContainerElement = this.itemsContainer.nativeElement;
-        if (!itemsContainerElement.contains(target)) {
-          this.isItemsVisible = false; 
-        }
-      }
-    }
+    //   if (this.isSmallScreen && this.isItemsVisible && this.itemsContainer) {
+    //     const itemsContainerElement = this.itemsContainer.nativeElement;
+    //     if (!itemsContainerElement.contains(target)) {
+    //       this.isItemsVisible = false; 
+    //     }
+    //   }
+    // }
   
     @HostListener('window:resize', ['$event'])
     onResize() {

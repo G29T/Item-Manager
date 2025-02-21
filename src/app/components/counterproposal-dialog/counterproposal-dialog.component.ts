@@ -84,7 +84,7 @@ export class CounterProposalDialogComponent {
 
   submitCounterProposal(): void {
     if (!this.isFormValid()) {
-      return; // Prevent submission if the form is invalid
+      return; 
     }
 
     const item = this.data.selectedProposal;
