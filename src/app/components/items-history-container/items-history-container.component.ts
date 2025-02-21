@@ -15,7 +15,7 @@ export class ItemsHistoryConatinerComponent {
   constructor(private eRef: ElementRef) {}
   
     isItemsVisible: boolean = false;
-    isSmallScreen: boolean = window.innerWidth <= 1024;
+    isSmallScreen: boolean = window.innerWidth <= 1023;
   
     toggleItemsContainer() {
       this.isItemsVisible = !this.isItemsVisible;
@@ -34,6 +34,6 @@ export class ItemsHistoryConatinerComponent {
   
     @HostListener('window:resize', ['$event'])
     onResize() {
-      this.isSmallScreen = window.innerWidth <= 768;
+      this.isSmallScreen = window.innerWidth <= 1023;
     }
 }
