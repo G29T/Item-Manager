@@ -25,9 +25,10 @@
     .container {
         display: flex;
         justify-content: center;
-      flex-direction: column;
-      width: 100%;
-      position: relative;
+        flex-direction: column;
+        width: 100%;
+        position: relative;
+        margin-bottom: 50px;
     }
   
     .menu-button {
