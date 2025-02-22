@@ -14,6 +14,7 @@ This README covers topics such as Key Features, LocalStorage, Responsive Design 
 
 ## Set up
 
+- npm install
 - npm install -g @angular/cli
 
 Open your package.json file and ensure that the scripts section includes the following entries:
